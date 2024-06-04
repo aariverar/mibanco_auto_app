@@ -1,13 +1,15 @@
-Feature: Flujos Automatizados URPI
+Feature: Flujos Automatizados APP URPI
 
-  @Prueba1
+  @Urpi @Calidad
   Scenario Outline: Login Exitoso del App URPI
-    Given ingreso al App URPI
-    When ingreso mi correo "<correo>"
+    Given ingreso al App URPI "<datos>"
+    When ingreso mi correo "<datos>"
     And doy click en el boton siguiente
-    And ingreso la clave "<password>"
+    And ingreso la clave "<datos>"
     Then doy click en el boton ingresar
 
-    Examples: 
-      | correo                  | password  |
-      | 61444tmp@mibanco.com.pe | Mibanco$4 |
+    Examples:
+      | datos |
+      |     1 |
+      |     2 |
+      |     3 |

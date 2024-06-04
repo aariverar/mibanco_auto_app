@@ -4,37 +4,42 @@ from src.test.pages.pages_appTEST import APP_TEST
 
 pageTEST = None
 
-@given('usuario ingresa a la app TEST')
-def step_impl(context):
-    global pageTEST
+@given('usuario ingresa a la app TEST "{datos}"')
+def step_impl(context, datos):
     context.pageTEST = APP_TEST(context)
-    context.pageTEST.abrir_app_TEST()
+    context.ejecutar =  context.pageTEST.lecturaexcel(datos)
+    if context.ejecutar=="SI":
+        context.state = None
+        context.pageTEST.abrir_app_TEST()
+        context.pageTEST.inicializarWord(datos)
+
 
 
 @given('usuario da click en boton Registrarse')
 def step_impl(context):
-    global pageTEST
     context.pageTEST = APP_TEST(context)
-    context.pageTEST.click_Registrarse()
+    if context.ejecutar=="SI":
+        context.pageTEST.click_Registrarse()
 
-@given('usuario ingresa datos de formulario "{nombre}", "{id}", "{pass1}", "{pass2}"')
-def step_impl(context, nombre, id, pass1, pass2):
-    global pageTEST
+@given('usuario ingresa datos de formulario "{datos}"')
+def step_impl(context, datos):
     context.pageTEST = APP_TEST(context)
-    context.pageTEST.ingresa_Nombre_Apellido(nombre)
-    context.pageTEST.ingresa_ID(id)
-    context.pageTEST.ingresa_password_1(pass1)
-    context.pageTEST.ingresa_password_2(pass2)
-    context.pageTEST.click_Terminos_Condiciones()
+    if context.ejecutar=="SI":
+        context.pageTEST.ingresa_Nombre_Apellido(datos)
+        context.pageTEST.ingresa_ID(datos)
+        context.pageTEST.ingresa_password_1(datos)
+        context.pageTEST.ingresa_password_2(datos)
+        context.pageTEST.click_Terminos_Condiciones()
 
 @given('usuario se Registra')
 def step_impl(context):
-    global pageTEST
     context.pageTEST = APP_TEST(context)
-    context.pageTEST.click_Registrarse2()
+    if context.ejecutar=="SI":
+        context.pageTEST.click_Registrarse2()
 
 @then('se verifica el registro')
 def step_impl(context):
-    global pageTEST
-    context.pageTEST = APP_TEST(context)
-    print("valida")
+    if context.ejecutar=="SI":
+        print("valida")
+    else:
+        context.state = "NO-EXECUTED"

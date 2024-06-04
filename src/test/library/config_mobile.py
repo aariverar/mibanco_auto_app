@@ -25,12 +25,24 @@ class AppConfig:
         'nativeWebScreenshot': 'true'
     }
 
-    MI_DISPOSITIVO_URPI_KOBITON = {
+    MI_DISPOSITIVO_TEST_LOCAL2 = {
         'platformName': 'Android',
         'deviceName': 'MiDispositivo',
         'platformVersion': '11',
-        'udid': 'RF8NA05R3PM',
-        'app': 'kobiton-store:v672276',
+        'udid': 'emulator-5554',
+        'appPackage': 'appinventor.ai_aalexriverar.Tsoft_Test',
+        'appActivity': 'appinventor.ai_aalexriverar.Tsoft_Test.Screen1',
+        'automationName': 'UiAutomator2',
+        'ensureWebviewsHavePages': 'true',
+        'nativeWebScreenshot': 'true'
+    }
+
+    MI_DISPOSITIVO_URPI_KOBITON = {
+        'platformName': 'Android',
+        'deviceName':'Galaxy Note10+',
+        'platformVersion': '10',
+        'udid': 'RF8M822H8YV',
+        'app': 'kobiton-store:611646',
         'automationName': 'UiAutomator2',
         'ensureWebviewsHavePages': 'true',
         'nativeWebScreenshot': 'true',
@@ -38,8 +50,10 @@ class AppConfig:
         'sessionDescription': '',
         'deviceOrientation': 'portrait',
         'captureScreenshots': True,
-        'groupId': 2945,  # Group: La Positiva - Pruebas Mobile
         'deviceGroup': 'KOBITON',
         'kobi:retainDurationInSeconds': 0,
-        'kobiton_server_url': 'https://luis.mancini:28204dda-b4b7-45f7-be92-ed594f547eaa@api.kobiton.com/wd/hub'
+        'kobiton_server_url': 'https://agalan.mauricio:279c5126-1701-4313-8cb1-1b6429ff4649@api.kobiton.com/wd/hub'
     }
+
+    
+
