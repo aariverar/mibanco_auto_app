@@ -1,0 +1,157 @@
+[
+{
+  "elements": [
+    {
+      "keyword": "Scenario Outline",
+      "location": "src/test/features/appMiBanco.feature:65",
+      "name": "Activacion modo de confirmacion por correo APP MiBanco -- @1.1 ",
+      "status": "passed",
+      "steps": [
+        {
+          "keyword": "Given",
+          "location": "src/test/features/appMiBanco.feature:55",
+          "match": {
+            "arguments": [
+              {
+                "name": "datos",
+                "value": "1"
+              }
+            ],
+            "location": "src/test/features/steps/steps_appMiBancoModoConfirmacion.py:12"
+          },
+          "name": "Usuario se encuentra logueado en la APP MiBanco \"1\"",
+          "result": {
+            "duration": 62.02053093910217,
+            "status": "passed"
+          },
+          "step_type": "given"
+        },
+        {
+          "keyword": "And",
+          "location": "src/test/features/appMiBanco.feature:56",
+          "match": {
+            "arguments": [
+              {
+                "name": "datos",
+                "value": "1"
+              }
+            ],
+            "location": "src/test/features/steps/steps_appMiBancoModoConfirmacion.py:45"
+          },
+          "name": "Usuario ingresa a las Opciones \"1\"",
+          "result": {
+            "duration": 0.6214442253112793,
+            "status": "passed"
+          },
+          "step_type": "given"
+        },
+        {
+          "keyword": "And",
+          "location": "src/test/features/appMiBanco.feature:57",
+          "match": {
+            "arguments": [
+              {
+                "name": "datos",
+                "value": "1"
+              }
+            ],
+            "location": "src/test/features/steps/steps_appMiBancoModoConfirmacion.py:54"
+          },
+          "name": "Usuario da tap al boton modo de confirmacion \"1\"",
+          "result": {
+            "duration": 1.0385890007019043,
+            "status": "passed"
+          },
+          "step_type": "given"
+        },
+        {
+          "keyword": "When",
+          "location": "src/test/features/appMiBanco.feature:58",
+          "match": {
+            "arguments": [
+              {
+                "name": "datos",
+                "value": "1"
+              }
+            ],
+            "location": "src/test/features/steps/steps_appMiBancoModoConfirmacion.py:61"
+          },
+          "name": "Usuario selecciona el modo de confirmacion por correo \"1\"",
+          "result": {
+            "duration": 8.152334213256836,
+            "status": "passed"
+          },
+          "step_type": "when"
+        },
+        {
+          "keyword": "And",
+          "location": "src/test/features/appMiBanco.feature:59",
+          "match": {
+            "arguments": [
+              {
+                "name": "datos",
+                "value": "1"
+              }
+            ],
+            "location": "src/test/features/steps/steps_appMiBancoModoConfirmacion.py:72"
+          },
+          "name": "Usuario extrae el otp del correo modoConfirmacion \"1\"",
+          "result": {
+            "duration": 21.93588161468506,
+            "status": "passed"
+          },
+          "step_type": "when"
+        },
+        {
+          "keyword": "And",
+          "location": "src/test/features/appMiBanco.feature:60",
+          "match": {
+            "arguments": [
+              {
+                "name": "datos",
+                "value": "1"
+              }
+            ],
+            "location": "src/test/features/steps/steps_appMiBancoModoConfirmacion.py:88"
+          },
+          "name": "Usuario ingresa el codigo otp y da click en el boton Validar \"1\"",
+          "result": {
+            "duration": 10.971617221832275,
+            "status": "passed"
+          },
+          "step_type": "when"
+        },
+        {
+          "keyword": "Then",
+          "location": "src/test/features/appMiBanco.feature:61",
+          "match": {
+            "arguments": [
+              {
+                "name": "datos",
+                "value": "1"
+              }
+            ],
+            "location": "src/test/features/steps/steps_appMiBancoModoConfirmacion.py:96"
+          },
+          "name": "Usuario valida la activacion del modo confirmacion por correo \"1\"",
+          "result": {
+            "duration": 17.459372997283936,
+            "status": "passed"
+          },
+          "step_type": "then"
+        }
+      ],
+      "tags": [
+        "NCD_ActivarEnvioOtp",
+        "HP"
+      ],
+      "type": "scenario"
+    }
+  ],
+  "keyword": "Feature",
+  "location": "src/test/features/appMiBanco.feature:1",
+  "name": "Flujos Automatizados APP Mi Banco",
+  "status": "passed",
+  "tags": []
+}
+]

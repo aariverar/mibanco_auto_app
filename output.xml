@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<testsuites>
+  <testsuite name="Flujos Automatizados APP Mi Banco" tests="1">
+    <testcase classname="Flujos Automatizados APP Mi Banco" name="Activacion modo de confirmacion por correo APP MiBanco -- @1.1 " time="122.19977021217346"/>
+  </testsuite>
+</testsuites>

@@ -55,5 +55,35 @@ class AppConfig:
         'kobiton_server_url': 'https://agalan.mauricio:279c5126-1701-4313-8cb1-1b6429ff4649@api.kobiton.com/wd/hub'
     }
 
+
+    MI_DISPOSITIVO_MIBANCO_KOBITON = {
+        'platformName': 'Android',
+        'deviceName':'Galaxy S22',
+        'platformVersion': '14',
+        'udid': 'R3CW30FYAHE',
+        'app': 'kobiton-store:622989',
+        'automationName': 'UiAutomator2',
+        'ensureWebviewsHavePages': 'true',
+        'nativeWebScreenshot': 'true',
+        'sessionName': 'Automation Mi Banco',
+        'sessionDescription': '',
+        'deviceOrientation': 'portrait',
+        'captureScreenshots': True,
+        'deviceGroup': 'KOBITON',
+        'kobi:retainDurationInSeconds': 0,
+        'kobiton_server_url': 'https://MiBancoAbraham:0357420e-50f2-4cb2-a2d0-5df7b99da79f@api.kobiton.com/wd/hub'
+    }
+
+    MI_DISPOSITIVO_HUAWEI_LOCAL2 = {
+        'platformName': 'Android',
+        'deviceName': 'C1M2P3',
+        'platformVersion': '10',
+        'udid': 'UCY6R20716003472',
+        'appPackage': 'com.mibanco.bancamovil.qa',
+        'appActivity': 'com.mibanco.bancamovil.MainActivity',
+        'automationName': 'UiAutomator2',
+        'ensureWebviewsHavePages': 'true',
+        'nativeWebScreenshot': 'true'
+    }
     
 
