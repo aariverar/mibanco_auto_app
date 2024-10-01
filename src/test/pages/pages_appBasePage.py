@@ -1,6 +1,7 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.support import expected_conditions as EC
 import src.test.library.word_generate as generateWord
 from src.test.library.excel_reader import data
@@ -11,6 +12,7 @@ import time
 from appium.webdriver.extensions.android.nativekey import AndroidKey
 from appium.webdriver.common.appiumby import AppiumBy  # Actualización para MobileBy
 from appium.webdriver.extensions.android.nativekey import AndroidKey  
+from src.test.library.util_mobile import *
 
 class BASE_PAGE:
 
@@ -32,7 +34,7 @@ class BASE_PAGE:
         BASE_PAGE.screenshot_counter += 1
     
     def get_data(self):
-        return data(excelObjects.nombreExcel,excelObjects.nombreLogin)
+        return data(excelObjects.nombreExcel,self.context.hoja)
 
     def lecturaexcel(self, datos):
         ejecucion = self.get_data()[int(datos)-1][excelObjects.columnEjecucion]
@@ -47,7 +49,7 @@ class BASE_PAGE:
     
     def click_omitir_tutorial(self):
         try:
-            WebDriverWait(self.context.mdriver, 30).until(
+            WebDriverWait(self.context.mdriver, 15).until(
                 EC.presence_of_element_located((AppiumBy.XPATH, '//android.widget.TextView[@resource-id="idTextPrimary" and @text="Omitir"]')) 
             )
             btn_omitir = self.context.mdriver.find_element(AppiumBy.XPATH, '//android.widget.TextView[@resource-id="idTextPrimary" and @text="Omitir"]')
@@ -59,7 +61,7 @@ class BASE_PAGE:
 
     def click_Si__ese_es_mi_correo(self):
         try:
-            WebDriverWait(self.context.mdriver, 30).until(
+            WebDriverWait(self.context.mdriver, 15).until(
                 EC.presence_of_element_located((AppiumBy.XPATH, '//android.widget.TextView[@resource-id="idTextPrimary" and @text="Si, ese es mi correo"]')) 
             )
             btn_si = self.context.mdriver.find_element(AppiumBy.XPATH, '//android.widget.TextView[@resource-id="idTextPrimary" and @text="Si, ese es mi correo"]')
@@ -78,7 +80,7 @@ class BASE_PAGE:
     def validacion_Login(self):
         try:
             #VALIDACION OBJETO: QUE HAGO?
-            WebDriverWait(self.context.mdriver, 30).until(
+            WebDriverWait(self.context.mdriver, 15).until(
                 EC.presence_of_element_located((AppiumBy.XPATH, '//android.widget.ImageView[@content-desc="que hago"]')) 
             )
             Log="Exito validacion objeto: Que hago?\n"
@@ -101,10 +103,25 @@ class BASE_PAGE:
             self.context.nameImg.append(img_name)
             Log+="Exito validacion objeto tasa de cambio venta\n"
         except NoSuchElementException:
-            print(f"No se encontró el elemento necesario para realizar la verificación. click_Si__ese_es_mi_correo() \n {Log}")
+                print(f"No se encontró el elemento necesario para realizar la verificación. validacion_pageModoConfirmacion() \n")     
+        except TimeoutException:
+            print("No se encontró el elemento necesario para realizar la verificación.validacion_Login()")
+            generateWord.send_text("No realizó correctamente el login")
+            img_name = generateWord.add_image_to_word(self.context.mdriver)
+            self.context.nameImg.append(img_name)
+            raise AssertionError("Encontro el objeto. validacion_Modo_Confirmacion_Correo()")
+        except Exception as e:
+            print(f"No se realizó correctamente el cambio de confirmacion")
+            generateWord.send_text("No se realizó correctamente el cambio de confirmacion")
+            img_name = generateWord.add_image_to_word(self.context.mdriver)
+            self.context.nameImg.append(img_name)
+            raise AssertionError(f"Ocurrió un error inesperado: {str(e)}")
 
     def click_Opciones(self):
         try:
+            WebDriverWait(self.context.mdriver, 30).until(
+                EC.presence_of_element_located((AppiumBy.XPATH, '//android.view.View[@content-desc="menu sandwitch"]'))
+            )
             btn_menu = self.context.mdriver.find_element(AppiumBy.XPATH, '//android.view.View[@content-desc="menu sandwitch"]')
             btn_menu.click()
         except NoSuchElementException:
@@ -121,6 +138,9 @@ class BASE_PAGE:
 
     def click_quitar(self):
         try:
+            generateWord.send_text("Se realiza el desenrolamiento")
+            img_name = generateWord.add_image_to_word(self.context.mdriver)
+            self.context.nameImg.append(img_name)
             btn_quitar = WebDriverWait(self.context.mdriver, 30).until(
                 EC.presence_of_element_located((AppiumBy.XPATH, '//android.widget.TextView[@resource-id="profilescreen_cardicontextclicktext_text_primary_action_show_unrollingdialog"]')) 
             )
@@ -134,8 +154,12 @@ class BASE_PAGE:
             btn_quitar = WebDriverWait(self.context.mdriver, 30).until(
                 EC.presence_of_element_located((AppiumBy.XPATH, '//android.widget.TextView[@resource-id="idTextPrimary" and @text="Quitar"]')) 
             )
+            img_name = generateWord.add_image_to_word(self.context.mdriver)
+            self.context.nameImg.append(img_name)
             btn_quitar.click()
             time.sleep(5)
+            img_name = generateWord.add_image_to_word(self.context.mdriver)
+            self.context.nameImg.append(img_name)
         except NoSuchElementException:
             print("No se encontró el elemento necesario para realizar la verificación. click_quitar2()")
 
@@ -148,4 +172,86 @@ class BASE_PAGE:
             btn_modoconfirmacion.click()
         except NoSuchElementException:
             print("No se encontró el elemento necesario para realizar la verificación.click_ModoConfirmacion()")
+
+    def click_transferencias(self):
+        try:
+            btn_quitar = WebDriverWait(self.context.mdriver, 30).until(
+                EC.presence_of_element_located((AppiumBy.XPATH, '//android.widget.TextView[@text="Transferencias"]')) 
+            )
+            btn_quitar.click()
+        except NoSuchElementException:
+            print("No se encontró el elemento necesario para realizar la verificación. click_transferencias()")
     
+
+
+    def seleccionar_Cuenta(self,datos):
+        try:
+            for o in range(2):
+                cuentas = WebDriverWait(self.context.mdriver, 30).until(
+                    EC.presence_of_all_elements_located((AppiumBy.XPATH, '//android.view.View[@resource-id="consultscreen_card_click_select_account"]/android.view.View/android.view.View'))
+                )
+                print("Se captura Lista de Cuentas")
+                numeroDeCuentas=len(cuentas)
+                for i in range(numeroDeCuentas):
+                    try:
+                        print(f"Ingresa al for cuentas {i}")
+                        cuenta = cuentas[i]
+                        cuenta.click()
+                        print("Se da click a la primera cuenta")
+                        WebDriverWait(self.context.mdriver, 30).until(
+                            EC.presence_of_element_located((AppiumBy.XPATH, '//android.widget.TextView[@text="Saldo disponible"]'))
+                        )
+                        time.sleep(5)
+                        numeroCuenta = WebDriverWait(self.context.mdriver, 30).until(
+                            EC.presence_of_element_located((AppiumBy.XPATH, '//android.widget.TextView[contains(@text,"N° de cuenta:")]/following-sibling::android.widget.TextView[1]'))
+                        )
+                        nroCuentaData = self.get_data()[int(datos)-1][excelObjects.columnNroCuenta]
+                        textNroCuenta = numeroCuenta.get_attribute("text")
+                        if nroCuentaData == textNroCuenta:
+                            print("Se valida numero de cuenta")
+                            generateWord.send_text("Se selecciona la cuenta a cancelar")
+                            img_name = generateWord.add_image_to_word(self.context.mdriver)
+                            self.context.nameImg.append(img_name)
+                            return "True"
+                        else:
+                            print("No coincide el numero de cuenta")
+                            botonAtras=self.context.mdriver.find_element(AppiumBy.XPATH, '//android.view.View[@content-desc="icon_back"]')
+                            botonAtras.click()
+                            btnCerrarDesembolso = WebDriverWait(self.context.mdriver, 10).until(
+                                    EC.presence_of_element_located((AppiumBy.XPATH, '//android.widget.ImageView[@content-desc="cerrar"]')) 
+                                )
+                            btnCerrarDesembolso.click()
+                            cuentas = WebDriverWait(self.context.mdriver, 30).until(
+                                EC.presence_of_all_elements_located((AppiumBy.XPATH, '//android.view.View[@resource-id="consultscreen_card_click_select_account"]/android.view.View/android.view.View'))
+                            )
+                    except StaleElementReferenceException:
+                        print(f"Elemento obsoleto en la cuenta {i + 1}, volviendo a intentar")
+                        cuentas = WebDriverWait(self.context.mdriver, 30).until(
+                            EC.presence_of_all_elements_located((AppiumBy.XPATH, '//android.view.View[@resource-id="consultscreen_card_click_select_account"]/android.view.View/android.view.View'))
+                        )
+                for p in range(5):
+                    scrollMobile(self.context.mdriver)
+            print("Error")
+            raise Exception("No se encontró la cuenta a cancelar")
+       
+        except NoSuchElementException:
+            print("No se encontro la cuenta a cancelar NoSuchElementException")
+            generateWord.send_text("No se encontro la cuenta a cancelar")
+            img_name = generateWord.add_image_to_word(self.context.mdriver)
+            self.context.nameImg.append(img_name)
+        except Exception as e:
+            print(f"No se encontro la cuenta {e}")
+            generateWord.send_text("No se encontro la cuenta a cancelar Exception")
+            img_name = generateWord.add_image_to_word(self.context.mdriver)
+            self.context.nameImg.append(img_name)
+            raise AssertionError("No se encontro la cuenta a cancelar")
+        
+
+    def cerrarBannerDesembolso(self):
+        try:
+            btnCerrarDesembolso = WebDriverWait(self.context.mdriver, 5).until(
+                    EC.presence_of_element_located((AppiumBy.XPATH, '//android.widget.ImageView[@content-desc="cerrar"]')) 
+                )
+            btnCerrarDesembolso.click()
+        except TimeoutException:
+            print("No hay banner de desembolso")

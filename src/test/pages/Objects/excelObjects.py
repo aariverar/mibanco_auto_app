@@ -6,6 +6,8 @@ nombreLogin="Login"
 nombreOlvide="OlvideMiClave"
 nombreRegistro="Registro"
 nombreModoConfirmacion="ActivarConfirmacion"
+nombreTransferenciasOtrasCuentas="TransferenciasOtrasCuentas"
+nombreAperturaCuenta = "AperturaCta"
 #NOMBRE COLUMNAS
 columnEjecucion = "Ejecutar"
 
@@ -23,3 +25,15 @@ columnNroTarjeta = "Tarjeta"
 columnClaveCajero = "Clave Cajero"
 columnClaveInternet = "nueva clave internet"
 columnNuevaClaveInternet = "confirmacion clave internet"
+
+#NOMBRE DE COLUMNAS TRANSFERENCIAS A OTRAS CUENTAS MIBANCO
+columnCuentaOrigen = "Cuenta Origen"
+columnCuentaDestino ="Cuenta Destino"
+columnTipoMoneda ="Moneda"
+columnMonto = "Monto"
+
+#APERTURA CUENTA
+columnTipoCuenta="tipoCuenta"
+
+#CANCELACION CUENTA
+columnNroCuenta="nroCuenta"

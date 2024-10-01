@@ -1,6 +1,7 @@
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 import src.test.library.word_generate as generateWord
 from src.test.library.excel_reader import data
@@ -129,6 +130,12 @@ class OUTLOOK_OTP:
             self.context.nameImg.append(img_name)
         except NoSuchElementException:
             print(f"No se encontró el elemento necesario para realizar la verificación. click_Si__ese_es_mi_correo() \n {Log}")
+        except TimeoutException:
+            print(f"No Se visualiza el envio de constancia al correo")
+            generateWord.send_text(f"NO Se visualiza el envio de constancia al correo")
+            img_name = generateWord.add_image_to_word_web(self.context.driver)
+            self.context.nameImg.append(img_name)
+            raise AssertionError("NO Se visualiza el envio de constancia al correo")      
 
     def validacion_constancia_registro(self):
         try:
@@ -142,4 +149,69 @@ class OUTLOOK_OTP:
             img_name = generateWord.add_image_to_word_web(self.context.driver)
             self.context.nameImg.append(img_name)
         except NoSuchElementException:
-            print(f"No se encontró el elemento necesario para realizar la verificación. validacion_constancia_registro() \n {Log}")                 
+            print(f"No se encontró el elemento necesario para realizar la verificación. validacion_constancia_registro() \n {Log}")    
+        except TimeoutException:
+            print(f"No Se visualiza el envio de constancia al correo")
+            generateWord.send_text(f"NO Se visualiza el envio de constancia al correo")
+            img_name = generateWord.add_image_to_word_web(self.context.driver)
+            self.context.nameImg.append(img_name)
+            raise AssertionError("NO Se visualiza el envio de constancia al correo")            
+
+        
+    def seleccionarCorreoConfirmacion(self):
+        try: 
+            tiempoTotal = 300
+            intervaloRefresh = 10
+            finTiempo = time.time() + tiempoTotal
+       
+            while time.time() < finTiempo:
+                try:
+                    lblTituloCorreo = WebDriverWait(self.context.driver, 30).until(EC.element_to_be_clickable((By.XPATH, f"//span[contains(text(),'¡Felicidades! Tu cuenta de ahorros Mibanco se creó con éxito. Cuenta: {self.context.nroCuentaCreada}')]")))
+                    lblTituloCorreo.click()
+                    print("Correo encontrado y clickeado.")
+                    return
+ 
+                except TimeoutException:
+                    self.context.driver.refresh()
+                    time.sleep(intervaloRefresh)  
+            print("No se encontró el correo en el tiempo especificado.")
+ 
+        except NoSuchElementException:
+            print("No se encontró el elemento necesario para realizar la verificación.")
+
+    def validarCorreoConfirmacion(self):
+        textoOutput = ""
+        try:
+            time.sleep(2)
+            numeroConfirmacion = WebDriverWait(self.context.driver, 30).until(EC.presence_of_element_located((By.XPATH, "//table/tbody/tr/td/table[4]/tbody/tr/td/table/tbody/tr/td/table[4]/tbody/tr/td/div/p")))        
+            textoOutput = numeroConfirmacion.text.strip()
+            textoEsperado = self.context.nrooperacion
+            time.sleep(2)
+            assert textoOutput == textoEsperado
+            generateWord.send_text("Se ingresa al último correo recibido y se verifica el correo de confirmación con el N° de operación: " + textoEsperado)
+            img_name = generateWord.add_image_to_word_web(self.context.driver)
+            self.context.nameImg.append(img_name)
+        except AssertionError:
+            print(f"La verificación falló: el texto obtenido no coincide con el texto esperado. Texto obtenido: {textoOutput}")
+            generateWord.send_text(f"NO se encontró el correo de confirmación. Texto obtenido: {textoOutput}")
+            img_name = generateWord.add_image_to_word_web(self.context.driver)
+            self.context.nameImg.append(img_name)
+            raise AssertionError(f"La verificación falló: el texto obtenido no coincide con el texto esperado. Texto obtenido: {textoOutput}")
+        except NoSuchElementException:
+            print(f"No se encontró el elemento necesario para realizar la verificación. Texto obtenido: {textoOutput}")
+            generateWord.send_text(f"NO se encontró el correo de confirmación. Texto obtenido: {textoOutput}")
+            img_name = generateWord.add_image_to_word_web(self.context.driver)
+            self.context.nameImg.append(img_name)
+            raise AssertionError(f"No se encontró el elemento necesario para realizar la verificación. Texto obtenido: {textoOutput}")
+        except TimeoutException:
+            print(f"No se encontró el elemento necesario para realizar la verificación. Texto obtenido: {textoOutput}")
+            generateWord.send_text(f"NO se encontró el correo de confirmación. Texto obtenido: {textoOutput}")
+            img_name = generateWord.add_image_to_word_web(self.context.driver)
+            self.context.nameImg.append(img_name)
+            raise AssertionError(f"No se encontró el elemento necesario para realizar la verificación. Texto obtenido: {textoOutput}")
+        except Exception as e:
+            print(f"Ocurrió un error inesperado: {str(e)}")
+            generateWord.send_text(f"Ocurrió un error inesperado: {str(e)}")
+            img_name = generateWord.add_image_to_word_web(self.context.driver)
+            self.context.nameImg.append(img_name)
+            raise AssertionError(f"Ocurrió un error inesperado: {str(e)}")                

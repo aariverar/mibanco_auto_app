@@ -10,6 +10,7 @@ from src.test.pages.pages_appRegistro3 import APP_REGISTRO3
 
 @given('Usuario se encuentra en la APP Mibanco registro "{datos}"')
 def step_impl(context, datos):
+    context.hoja="Registro"
     context.pageLogin = APP_LOGIN(context)
     context.pageRegistro = APP_REGISTRO(context)
     context.ejecutar =  context.pageRegistro.lecturaexcel(datos)
@@ -59,7 +60,7 @@ def step_impl(context, datos):
 def step_impl(context, datos):
     context.pageOUTLOOK = OUTLOOK_OTP(context)
     if context.ejecutar=="SI":
-        context.hoja="Registro"
+        
         context.pageOUTLOOK.inicializar_driver_chrome()
         context.pageOUTLOOK.abrir_Outlook()
         context.pageOUTLOOK.input_email(datos)

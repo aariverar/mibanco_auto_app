@@ -5,7 +5,6 @@ from behave import *
 from src.test.library.config_mobile import AppConfig
 import configparser
 from datetime import datetime
-from src.test.library.util_mobile import UTIL_MOBILE
 import os
 import src.test.library.word_generate as generateWord
 from src.test.library.utils import *
@@ -122,7 +121,6 @@ def before_scenario(context, scenario):
     config = configparser.ConfigParser()
     config.read('database.properties')
     context.flagBD = config.get('Database', 'Ejecutar')
-    context.Saul = "HOLA"
     if context.flagBD.lower() =='true':
         context.conexionBD = connectionBD()
    
@@ -132,7 +130,7 @@ def after_scenario(context, scenario):
         context.conexionBD.close()
         print("[LOG] Se cierra la conexion a la BD")
     if context.state is not None:
-        generateWord.borar_word()
+        generateWord.borrar_word()
         scenario.set_status("skipped")
         scenario_NewName = {
             'scenario_name': scenario.name,
@@ -169,11 +167,13 @@ def after_scenario(context, scenario):
             print("La aplicación ha sido cerrada.")
     except Exception as e:
         print("Error al cerrar y abrir la aplicación:", e)
+        global contador_ejecuciones
+        contador_ejecuciones=0
 
 def after_all(context):
     print("Cerrando conexión mobile global...")
-    #if hasattr(context, 'mdriver'):
-        #context.mdriver.quit()
+    if hasattr(context, 'mdriver'):
+        context.mdriver.quit()
     modify_json_behave(context.step_img, json_behave_path, json_new_path,context.newNames)
     
     # Generate the HTML report

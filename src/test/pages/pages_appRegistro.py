@@ -1,5 +1,6 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 import src.test.library.word_generate as generateWord
 from src.test.library.excel_reader import data
@@ -148,3 +149,8 @@ mi tarjeta de débito"]""")
                 btn_validar.click()
             except NoSuchElementException:
                 print("No se encontró el elemento necesario para realizar la verificación.click_valida_identidad_correo()")            
+            except TimeoutException:
+                generateWord.send_text("Error en registro")
+                img_name = generateWord.add_image_to_word(self.context.mdriver)
+                self.context.nameImg.append(img_name)
+                raise AssertionError("Error en registro")

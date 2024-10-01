@@ -11,6 +11,7 @@ from src.test.pages.pages_appModoDeConfirmacion import APP_MODO_CONFIRMACION
 
 @given('Usuario se encuentra logueado en la APP MiBanco "{datos}"')
 def step_impl(context, datos):
+    context.hoja="ActivarConfirmacion"
     context.pageLogin = APP_LOGIN(context)
     context.pageConfirmacion = APP_MODO_CONFIRMACION(context)
     context.pageBase = BASE_PAGE(context)
@@ -18,7 +19,7 @@ def step_impl(context, datos):
     context.ejecutar =  context.pageConfirmacion.lecturaexcel(datos)
     if context.ejecutar=="SI":
         context.state = None
-        context.hoja="ActivarConfirmacion"
+        
         context.pageLogin.abrir_appMiBanco()
         context.pageConfirmacion.inicializarWord(datos)
         context.pageLogin.click_ingresar()

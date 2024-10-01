@@ -31,7 +31,7 @@ class APP_REGISTRO3:
         self.context = context
     
     def get_data(self):
-        return data(excelObjects.nombreExcel,excelObjects.nombreOlvide)
+        return data(excelObjects.nombreExcel,self.context.hoja)
 
     def lecturaexcel(self, datos):
         ejecucion = self.get_data()[int(datos)-1][excelObjects.columnEjecucion]
@@ -51,6 +51,7 @@ class APP_REGISTRO3:
             input_clave_internet = wait.until(EC.element_to_be_clickable((AppiumBy.XPATH, '//android.widget.EditText[@resource-id="newinternetkeyscreen_newpassword"]')))
             input_clave_internet.click()
             input_clave_internet.send_keys(nueva_clave_internet)
+            print(f"[LOG] Se escribe la nueva clave internet {nueva_clave_internet}")
             if self.context.mdriver.is_keyboard_shown():
                 self.context.mdriver.hide_keyboard()
             generateWord.send_text("Se ingresa nueva clave internet")
@@ -66,6 +67,7 @@ class APP_REGISTRO3:
             input_clave_internet = wait.until(EC.element_to_be_clickable((AppiumBy.XPATH, '//android.widget.EditText[@resource-id="newinternetkeyscreen_repeatpassword"]')))
             input_clave_internet.click()
             input_clave_internet.send_keys(confirmacion_clave_internet)
+            print(f"[LOG] Se escribe la confirmacion de  clave internet {confirmacion_clave_internet}")
             if self.context.mdriver.is_keyboard_shown():
                 self.context.mdriver.hide_keyboard()
             generateWord.send_text("Se ingresa confirmacion clave internet")
@@ -89,7 +91,7 @@ class APP_REGISTRO3:
             WebDriverWait(self.context.mdriver, 30).until(
                 EC.presence_of_element_located((AppiumBy.XPATH, '//android.widget.TextView[@resource-id="idTextPrimary"][2]')) 
             )
-            for _ in range(20):
+            for _ in range(30):
                 self.context.mdriver.execute_script("mobile: shell", {
                     'command': 'input', 
                     'args': ['swipe', '500', '1000', '500', '500']  # Ajusta estas coordenadas según el tamaño de tu dispositivo
@@ -120,7 +122,7 @@ class APP_REGISTRO3:
     def validacion_Felicitacion_registro(self):
         try:
             #VALIDACION OBJETO: Felicitaciones
-            WebDriverWait(self.context.mdriver, 30).until(
+            WebDriverWait(self.context.mdriver, 90).until(
                 EC.presence_of_element_located((AppiumBy.XPATH, '//android.widget.TextView[@resource-id="idTextPrimary" and @text="¡Felicitaciones!"]')) 
             )
             Log="Exito validacion objeto: Felicitaciones\n"

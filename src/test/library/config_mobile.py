@@ -61,7 +61,7 @@ class AppConfig:
         'deviceName':'Galaxy S22',
         'platformVersion': '14',
         'udid': 'R3CW30FYAHE',
-        'app': 'kobiton-store:622989',
+        'app': 'kobiton-store:624240',
         'automationName': 'UiAutomator2',
         'ensureWebviewsHavePages': 'true',
         'nativeWebScreenshot': 'true',
@@ -76,7 +76,7 @@ class AppConfig:
 
     MI_DISPOSITIVO_HUAWEI_LOCAL2 = {
         'platformName': 'Android',
-        'deviceName': 'C1M2P3',
+        'deviceName': 'Huawei',
         'platformVersion': '10',
         'udid': 'UCY6R20716003472',
         'appPackage': 'com.mibanco.bancamovil.qa',

@@ -1,5 +1,6 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 import src.test.library.word_generate as generateWord
 from src.test.library.excel_reader import data
@@ -106,8 +107,6 @@ class APP_LOGIN:
             generateWord.send_text("Se da click a ingresar")
             img_name = generateWord.add_image_to_word(self.context.mdriver)
             self.context.nameImg.append(img_name)
-            #generateWord.send_text("Se da tap a siguiente")
-            #generateWord.add_image_to_word(self.context.mdriver)
         except NoSuchElementException:
             print("No se encontró el elemento necesario para realizar la verificación.")
 
@@ -147,6 +146,11 @@ class APP_LOGIN:
                 self.context.mdriver.hide_keyboard()
         except NoSuchElementException:
             print("No se encontró el elemento necesario para realizar la verificación.")
+        except TimeoutException:
+            generateWord.send_text("Error en la carga de ingreso OTP")
+            img_name = generateWord.add_image_to_word(self.context.mdriver)
+            self.context.nameImg.append(img_name)
+            raise AssertionError("Error en la carga del ingreso al otp")
         except WebDriverException as e:
             for char in self.context.otp:
                 #input_otp.send_keys(nroDoc)

@@ -7,12 +7,13 @@ from src.test.pages.pages_appOlvideMiClave2 import APP_OLVIDE2
 from src.test.pages.pages_appOlvideMiClave3 import APP_OLVIDE3
 @given('Usuario se encuentra en la APP MiBanco cambio_clave "{datos}"')
 def step_impl(context, datos):
+    context.hoja="OlvideMiClave"
     context.pageLogin = APP_LOGIN(context)
     context.pageOlvide = APP_OLVIDE(context)
     context.ejecutar =  context.pageOlvide.lecturaexcel(datos)
     if context.ejecutar=="SI":
         context.state = None
-        context.hoja="OlvideMiClave"
+        
         context.pageLogin.abrir_appMiBanco()
         context.pageOlvide.inicializarWord(datos)
         context.pageLogin.click_ingresar()
@@ -46,7 +47,6 @@ def step_impl(context, datos):
 
 @when('Usuario extrae el otp del correo "{datos}"')
 def step_impl(context, datos):
-    context.pageLogin = APP_LOGIN(context)
     context.pageOUTLOOK = OUTLOOK_OTP(context)
     if context.ejecutar=="SI":
         context.pageOUTLOOK.inicializar_driver_chrome()
@@ -67,13 +67,13 @@ def step_impl(context, datos):
         context.pageOlvideClave2.ingresa_otp_login()
         context.pageLogin.click_siguiente()
 
-@when('Usuario ingresa la nueva clave de internet registro"{datos}"')
+@when('Usuario ingresa la nueva clave de internet "{datos}"')
 def step_impl(context, datos):
     context.pageOlvideClave3 = APP_OLVIDE3(context)
     if context.ejecutar=="SI":
         context.pageOlvideClave3.ingresar_nueva_clave_internet(datos)
 
-@when('Usuario confirma la nueva clave de internet registro"{datos}"')
+@when('Usuario confirma la nueva clave de internet "{datos}"')
 def step_impl(context, datos):
     context.pageOlvideClave3 = APP_OLVIDE3(context)
     if context.ejecutar=="SI":

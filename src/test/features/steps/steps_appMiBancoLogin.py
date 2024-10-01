@@ -5,11 +5,12 @@ from src.test.pages.pages_appBasePage import BASE_PAGE
 
 @given('Usuario se encuentra en la APP MiBanco "{datos}"')
 def step_impl(context, datos):
+    context.hoja="Login"
     context.pageLogin = APP_LOGIN(context)
     context.ejecutar =  context.pageLogin.lecturaexcel(datos)
     if context.ejecutar=="SI":
         context.state = None
-        context.hoja="Login"
+        
         context.pageLogin.abrir_appMiBanco()
         context.pageLogin.inicializarWord(datos)
         context.pageLogin.click_ingresar()
