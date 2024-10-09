@@ -31,7 +31,7 @@ class BASE_TRANSFERENCIAS:
         self.context = context
     
     def get_data(self):
-        return data(excelObjects.nombreExcel,self.context.hoja)
+        return data(self.context.excel,self.context.hoja)
 
     def lecturaexcel(self, datos):
         ejecucion = self.get_data()[int(datos)-1][excelObjects.columnEjecucion]
@@ -46,6 +46,9 @@ class BASE_TRANSFERENCIAS:
     
     def click_transferenciasOtrasCuentasMiBanco(self):
         try:
+            generateWord.send_text("Se da tap a transferencias A Otras Cuentas MiBanco")
+            img_name = generateWord.add_image_to_word(self.context.mdriver)
+            self.context.nameImg.append(img_name)
             WebDriverWait(self.context.mdriver, 90).until(
                 EC.presence_of_element_located((AppiumBy.XPATH, '//android.widget.TextView[@resource-id="idTextPrimary" and @text="A otras cuentas de Mibanco"]')) 
             )
@@ -54,10 +57,17 @@ class BASE_TRANSFERENCIAS:
         except NoSuchElementException:
             print("No se encontró el elemento necesario para realizar la verificación. click_transferenciasOtrasCuentasMiBanco()")
         except TimeoutException:
-            print("No aparecion boton omitir tutorial")
+            print("No cargo opciones de pantalla de transferencias")
+            generateWord.send_text("Error - No cargo opciones de pantalla de transferencias")
+            img_name = generateWord.add_image_to_word(self.context.mdriver)
+            self.context.nameImg.append(img_name)
+            raise AssertionError("Error - No cargo opciones de pantalla de transferencias")
     
     def click_transferenciasEntreMisCuentasMiBanco(self):
         try:
+            generateWord.send_text("Se da tap a transferencias Entre Mis Cuentas MiBanco")
+            img_name = generateWord.add_image_to_word(self.context.mdriver)
+            self.context.nameImg.append(img_name)
             WebDriverWait(self.context.mdriver, 90).until(
                 EC.presence_of_element_located((AppiumBy.XPATH, '//android.widget.TextView[@resource-id="idTextPrimary" and @text="Entre mis cuentas de Mibanco"]')) 
             )
@@ -66,4 +76,8 @@ class BASE_TRANSFERENCIAS:
         except NoSuchElementException:
             print("No se encontró el elemento necesario para realizar la verificación. click_transferenciasEntreMisCuentasMiBanco()")
         except TimeoutException:
-            print("No aparecion boton omitir tutorial")
+            print("No cargo opciones de pantalla de transferencias")
+            generateWord.send_text("Error - No cargo opciones de pantalla de transferencias")
+            img_name = generateWord.add_image_to_word(self.context.mdriver)
+            self.context.nameImg.append(img_name)
+            raise AssertionError("Error - No cargo opciones de pantalla de transferencias")

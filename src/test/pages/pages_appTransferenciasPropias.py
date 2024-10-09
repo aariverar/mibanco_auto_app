@@ -13,7 +13,7 @@ from appium.webdriver.common.appiumby import AppiumBy  # Actualización para Mob
 from appium.webdriver.extensions.android.nativekey import AndroidKey
 from selenium.common.exceptions import WebDriverException
 from src.test.library.util_mobile import *
-class APP_TRANSFERENCIASOTRASCUENTA:
+class APP_TRANSFERENCIASPROPIAS:
 
     screenshot_counter = 0
     digit_map = {
@@ -34,23 +34,28 @@ class APP_TRANSFERENCIASOTRASCUENTA:
     def get_data(self):
         return data(self.context.excel,self.context.hoja)
     
-    def validacionAotrasCuentasMiBanco(self):
+    def validacionEntreMisCuentasMiBanco(self):
         try:
             WebDriverWait(self.context.mdriver, 30).until(
-                    EC.presence_of_element_located((By.XPATH,'//android.widget.TextView[@text="A otras cuentas de Mibanco"]')) 
+                    EC.presence_of_element_located((By.XPATH,'//android.widget.TextView[@text="Entre mis cuentas de Mibanco"]')) 
             )
-            generateWord.send_text("Se valida el ingreso a Transferencias a otras cuentas de miBanco")
+            generateWord.send_text("Se valida el ingreso a Transferencias Entre mis cuentas de Mibanco")
             img_name = generateWord.add_image_to_word(self.context.mdriver)
             self.context.nameImg.append(img_name)
         except NoSuchElementException:
             print("No se encontró el elemento necesario para realizar la verificación. validacionAotrasCuentasMiBanco()")
+        except TimeoutException:
+            generateWord.send_text("Error la ingresar a Transferencias Entre mis cuentas de Mibanco")
+            img_name = generateWord.add_image_to_word(self.context.mdriver)
+            self.context.nameImg.append(img_name)
+            raise AssertionError("Error al ingresar a Transferencias entre mis cuentas")
 
     def click_seleccionarUnaCuentaOrigen(self):
         try:
             WebDriverWait(self.context.mdriver, 30).until(
-                    EC.presence_of_element_located((By.XPATH,'(//android.widget.TextView[@resource-id="idTextPrimary" and @text="¿Cuál es la cuenta de origen?"]/following-sibling::android.view.View/android.widget.TextView[@resource-id="idTextPrimary"])[1]')) 
+                    EC.presence_of_element_located((By.XPATH,'//android.widget.TextView[@resource-id="idTextPrimary" and @text="¿Cuál es la cuenta de origen?"]/following-sibling::android.widget.EditText[@resource-id="transmymibancos1screen_enterdata_originaccount"]/android.widget.TextView[@resource-id="idTextPrimary"]')) 
             )
-            selec_cuenta = self.context.mdriver.find_element(AppiumBy.XPATH, '(//android.widget.TextView[@resource-id="idTextPrimary" and @text="¿Cuál es la cuenta de origen?"]/following-sibling::android.view.View/android.widget.TextView[@resource-id="idTextPrimary"])[1]')
+            selec_cuenta = self.context.mdriver.find_element(AppiumBy.XPATH, '//android.widget.TextView[@resource-id="idTextPrimary" and @text="¿Cuál es la cuenta de origen?"]/following-sibling::android.widget.EditText[@resource-id="transmymibancos1screen_enterdata_originaccount"]/android.widget.TextView[@resource-id="idTextPrimary"]')
             text_cuenta = selec_cuenta.get_attribute("text")
             
             if text_cuenta=="Seleccionar una cuenta":       
@@ -64,7 +69,7 @@ class APP_TRANSFERENCIASOTRASCUENTA:
         except NoSuchElementException:
             print("No se encontró el elemento necesario para realizar la verificación. click_seleccionarUnaCuentaOrigen()")
     
-    def seleccionarCuenta(self, datos):
+    def seleccionarCuentaOrigen(self, datos):
         cuenta_origen=self.get_data()[int(datos)-1][excelObjects.columnCuentaOrigen]
         max_intentos = 5  # Número máximo de intentos para evitar un bucle infinito
         intentos = 0
@@ -98,36 +103,60 @@ class APP_TRANSFERENCIASOTRASCUENTA:
             self.context.nameImg.append(img_name)
             raise AssertionError(f"No se pudo encontrar cuenta origen '{cuenta_origen}'")
 
-    def ingresar_cuenta_destino(self, datos):
+    def click_seleccionarUnaCuentaDestino(self):
         try:
-            cuenta_destino = self.get_data()[int(datos)-1][excelObjects.columnCuentaDestino]
-            wait = WebDriverWait(self.context.mdriver, 5)
-            input_cuentaDestino = wait.until(EC.element_to_be_clickable((AppiumBy.XPATH, '//android.widget.EditText[@resource-id="toothermibancoaccountss1screen_enterdata_destinationaccount"]')))
-            input_cuentaDestino.click()
-            input_cuentaDestino.send_keys(cuenta_destino)
-            if self.context.mdriver.is_keyboard_shown():
-                    self.context.mdriver.hide_keyboard()
-            generateWord.send_text("Se ingresa numero de Cuenta Destino")
-            img_name = generateWord.add_image_to_word(self.context.mdriver)
-            self.context.nameImg.append(img_name)
-        except NoSuchElementException:
-            print("No se encontró el elemento necesario para realizar la verificación.ingresar_cuenta_destino()")
-    
-    def seleccionar_tipo_moneda(self, datos):
-            try:
-                tipo_moneda = self.get_data()[int(datos)-1][excelObjects.columnTipoMoneda]
-                wait = WebDriverWait(self.context.mdriver, 5)
-                if tipo_moneda.lower() == "soles":
-                    tipoMoneda = wait.until(EC.element_to_be_clickable((AppiumBy.XPATH, '//android.widget.TextView[@resource-id="idTextPrimary" and @text="S/ PEN"]')))
-                else:
-                    tipoMoneda = wait.until(EC.element_to_be_clickable((AppiumBy.XPATH, '//android.widget.TextView[@resource-id="idTextPrimary" and @text="$ USD"]')))
-                tipoMoneda.click()
-                generateWord.send_text("Se selecciona tipo de moneda")
+            WebDriverWait(self.context.mdriver, 30).until(
+                    EC.presence_of_element_located((By.XPATH,'//android.widget.TextView[@resource-id="idTextPrimary" and @text="¿Cuál es la cuenta de destino?"]/following-sibling::android.widget.EditText[@resource-id="transmymibancos1screen_enterdata_destinationaccount"]/android.widget.TextView[@resource-id="idTextPrimary"]')) 
+            )
+            selec_cuenta = self.context.mdriver.find_element(AppiumBy.XPATH, '//android.widget.TextView[@resource-id="idTextPrimary" and @text="¿Cuál es la cuenta de destino?"]/following-sibling::android.widget.EditText[@resource-id="transmymibancos1screen_enterdata_destinationaccount"]/android.widget.TextView[@resource-id="idTextPrimary"]')
+            text_cuenta = selec_cuenta.get_attribute("text")
+            
+            if text_cuenta=="Seleccionar una cuenta":       
+                selec_cuenta.click()
+                return True
+            else:
+                generateWord.send_text("Cliente solo tiene una cuenta como opcion de destino")
                 img_name = generateWord.add_image_to_word(self.context.mdriver)
                 self.context.nameImg.append(img_name)
-                scrollMobile(self.context.mdriver)
-            except NoSuchElementException:
-                print("No se encontró el elemento necesario para realizar la verificación.")
+                return False
+        except NoSuchElementException:
+            print("No se encontró el elemento necesario para realizar la verificación. click_seleccionarUnaCuentaDestino()")
+    
+    def seleccionarCuentaDestino(self, datos):
+        cuenta_destino=self.get_data()[int(datos)-1][excelObjects.columnCuentaDestino]
+        max_intentos = 5  # Número máximo de intentos para evitar un bucle infinito
+        intentos = 0
+        encontrado = False
+
+        while not encontrado and intentos < max_intentos:
+            try:
+                # Intentar encontrar el elemento
+                cuentaSeleccionada = WebDriverWait(self.context.mdriver, 10).until(
+                    EC.presence_of_element_located((By.XPATH, f'//android.widget.TextView[@text="{cuenta_destino}"]'))
+                )
+                # Si se encuentra, realiza la acción deseada
+                if cuentaSeleccionada:
+                    cuentaSeleccionada.click()  # Cambia esta línea por la acción que desees realizar
+                    encontrado = True
+                    intentos=10
+                    print(f"Elemento '{cuenta_destino}' encontrado y acción realizada.")
+                    generateWord.send_text("Se selecciona cuenta destino")
+                    img_name = generateWord.add_image_to_word(self.context.mdriver)
+                    self.context.nameImg.append(img_name)
+            except TimeoutException:
+                # Si no encuentra el elemento, realiza el scroll
+                print(f"Elemento '{cuenta_destino}' no encontrado. Realizando scroll para buscar nuevamente.")
+                scrollMobile(self.context.mdriver)  # Asegúrate de tener implementada esta función
+                intentos += 1
+
+        if not encontrado:
+            print(f"No se pudo encontrar el elemento '{cuenta_destino}' después de {max_intentos} intentos.")
+            generateWord.send_text(f"No se pudo encontrar cuenta destino {cuenta_destino}")
+            img_name = generateWord.add_image_to_word(self.context.mdriver)
+            self.context.nameImg.append(img_name)
+            raise AssertionError(f"No se pudo encontrar cuenta destino '{cuenta_destino}'")
+    
+
 
     def ingresar_monto(self, datos):
             try:
@@ -148,8 +177,9 @@ class APP_TRANSFERENCIASOTRASCUENTA:
                     # Multiplicar por 100 si no contiene punto
                     monto_convertido = str(int(monto) * 100)
                 time.sleep(2)
+                scrollMobile(self.context.mdriver)
                 wait = WebDriverWait(self.context.mdriver, 5)
-                input_monto = wait.until(EC.element_to_be_clickable((AppiumBy.XPATH, '//android.widget.EditText[@resource-id="toothermibancoaccountss1screen_enterdata_money_to_transfer"]')))
+                input_monto = wait.until(EC.element_to_be_clickable((AppiumBy.XPATH, '//android.widget.EditText[@resource-id="transmymibancos1screen_enterdatamoney_amount"]')))
                 input_monto.click()
                 input_monto.send_keys(monto_convertido)
                 if self.context.mdriver.is_keyboard_shown():
@@ -159,47 +189,4 @@ class APP_TRANSFERENCIASOTRASCUENTA:
                 self.context.nameImg.append(img_name)
             except NoSuchElementException:
                 print("No se encontró el elemento necesario para realizar la verificación.")
-
-    
-    def click_siguiente(self):
-        try:
-            WebDriverWait(self.context.mdriver, 30).until(
-                EC.presence_of_element_located((By.XPATH, '//android.widget.TextView[@resource-id="idTextPrimary" and @text="Siguiente"]')) 
-            )
-            btn_siguiente = self.context.mdriver.find_element(AppiumBy.XPATH, '//android.widget.TextView[@resource-id="idTextPrimary" and @text="Siguiente"]')
-            generateWord.send_text("Se da click a boton siguiente")
-            img_name = generateWord.add_image_to_word(self.context.mdriver)
-            self.context.nameImg.append(img_name)
-            btn_siguiente.click()
-        except NoSuchElementException:
-            print("No se encontró el elemento necesario para realizar la verificación.click_siguiente()")    
-
-    def validacion_mensaje_error_monto_minimo(self):
-        try:
-            WebDriverWait(self.context.mdriver, 15).until(
-                    EC.presence_of_element_located((By.XPATH,'//android.widget.TextView[contains(@text,"El monto debe ser mayor o igual a")]')) 
-            )
-            generateWord.send_text('Se valida el el mensaje de error "El monto debe ser mayor o igual"')
-            img_name = generateWord.add_image_to_word(self.context.mdriver)
-            self.context.nameImg.append(img_name)
-        except TimeoutException:
-            print("[Error] No se encontró el mensaje de error")
-            generateWord.send_text('[Error] No se encontró el mensaje de error')
-            img_name = generateWord.add_image_to_word(self.context.mdriver)
-            self.context.nameImg.append(img_name)
-            raise AssertionError("[Error] No se encontró el mensaje de error")
-
-    def validacion_mensaje_error_monto_maximo(self):
-            try:
-                WebDriverWait(self.context.mdriver, 15).until(
-                        EC.presence_of_element_located((By.XPATH,'//android.widget.TextView[contains(@text,"El monto debe ser menor o igual a")]')) 
-                )
-                generateWord.send_text('Se valida el el mensaje de error "El monto debe ser menor o igual"')
-                img_name = generateWord.add_image_to_word(self.context.mdriver)
-                self.context.nameImg.append(img_name)
-            except TimeoutException:
-                print("[Error] No se encontró el mensaje de error")
-                generateWord.send_text('[Error] No se encontró el mensaje de error')
-                img_name = generateWord.add_image_to_word(self.context.mdriver)
-                self.context.nameImg.append(img_name)
-                raise AssertionError("[Error] No se encontró el mensaje de error")
+        

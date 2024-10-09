@@ -5,17 +5,19 @@ from src.test.pages.pages_appBasePage import BASE_PAGE
 from src.test.pages.pages_appOlvideMiClave import APP_OLVIDE
 from src.test.pages.pages_appOlvideMiClave2 import APP_OLVIDE2
 from src.test.pages.pages_appOlvideMiClave3 import APP_OLVIDE3
+from src.test.pages.pages_appMiPerfil import APP_MIPERFIL
+
 @given('Usuario se encuentra en la APP MiBanco cambio_clave "{datos}"')
 def step_impl(context, datos):
+    context.excel="Data.xlsx"
     context.hoja="OlvideMiClave"
     context.pageLogin = APP_LOGIN(context)
     context.pageOlvide = APP_OLVIDE(context)
     context.ejecutar =  context.pageOlvide.lecturaexcel(datos)
     if context.ejecutar=="SI":
         context.state = None
-        
-        context.pageLogin.abrir_appMiBanco()
         context.pageOlvide.inicializarWord(datos)
+        context.pageLogin.abrir_appMiBanco()
         context.pageLogin.click_ingresar()
 
 @when('Usuario da tap en el enlace Olvide mi clave de internet "{datos}"')
@@ -57,7 +59,7 @@ def step_impl(context, datos):
         context.pageOUTLOOK.click_siguiente()
         context.pageOUTLOOK.click_ultimocorreo()
         context.pageOUTLOOK.extraerOTP_Login()
-        context.pageOUTLOOK.cerrarDriver()
+        #context.pageOUTLOOK.cerrarDriver()
 
 @when('Usuario ingresa el codigo otp y da click en el boton Verificar "{datos}"')
 def step_impl(context, datos):

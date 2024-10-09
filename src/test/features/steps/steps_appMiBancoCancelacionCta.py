@@ -8,8 +8,11 @@ from src.test.pages.pages_appOlvideMiClave2 import APP_OLVIDE2
 from src.test.pages.pages_appCuenta import APP_CUENTA
 from src.test.pages.pages_appCancelarCta import APP_CANCELACION_CUENTA
 from src.test.pages.pages_appCancelarCta2 import APP_CANCELACION_CUENTA2
+from src.test.pages.pages_appMiPerfil import APP_MIPERFIL
+
 @given('Usuario se encuentra logueado en la APP MiBanco cancelacion "{datos}"')
 def step_impl(context, datos):
+        context.excel="Data.xlsx"
         context.hoja="CancelacionCta"
         context.pageLogin = APP_LOGIN(context)
         context.pageConfirmacion = APP_MODO_CONFIRMACION(context)
@@ -18,8 +21,8 @@ def step_impl(context, datos):
         context.ejecutar =  context.pageLogin.lecturaexcel(datos)
         if context.ejecutar=="SI":
             context.state = None
-            context.pageLogin.abrir_appMiBanco()
             context.pageLogin.inicializarWord(datos)
+            context.pageLogin.abrir_appMiBanco()
             context.pageLogin.click_ingresar()
             #LOGIN
             context.pageLogin.ingresar_nro_doc(datos)
@@ -81,12 +84,24 @@ def step_impl(context, datos):
 def step_impl(context, datos):
     context.pageCancelarCta2 = APP_CANCELACION_CUENTA2(context)
     context.pageBase = BASE_PAGE(context)
+    context.pageMiPerfil = APP_MIPERFIL(context)
     if context.ejecutar=="SI":
         context.pageCancelarCta2.validarConstanciaCancelacionCuenta()
         context.pageCancelarCta2.click_btn_ir_inicio()
         context.pageBase.click_Opciones()
         context.pageBase.click_MiPerfil()
-        context.pageBase.click_quitar()
-        context.pageBase.click_quitar2()
+        context.pageMiPerfil.click_quitar()
+        context.pageMiPerfil.click_quitar2()
 
-
+@then('Usuario valida el correo de confirmacion de cancelacion de cuenta "{datos}"')
+def step_impl(context, datos):
+    context.pageOUTLOOK= OUTLOOK_OTP(context)
+    if context.ejecutar=="SI":
+        context.pageOUTLOOK.inicializar_driver_chrome()
+        context.pageOUTLOOK.abrir_Outlook()
+        context.pageOUTLOOK.input_email(datos)
+        context.pageOUTLOOK.click_siguiente()
+        context.pageOUTLOOK.input_password(datos)
+        context.pageOUTLOOK.click_siguiente()
+        context.pageOUTLOOK.seleccionarCorreoCancelacion()
+        context.pageOUTLOOK.cerrarDriver()

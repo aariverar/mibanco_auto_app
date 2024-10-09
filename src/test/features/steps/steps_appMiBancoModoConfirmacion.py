@@ -8,9 +8,11 @@ from src.test.pages.pages_appOlvideMiClave3 import APP_OLVIDE3
 from src.test.pages.pages_appRegistro import APP_REGISTRO
 from src.test.pages.pages_appRegistro3 import APP_REGISTRO3
 from src.test.pages.pages_appModoDeConfirmacion import APP_MODO_CONFIRMACION
+from src.test.pages.pages_appMiPerfil import APP_MIPERFIL
 
 @given('Usuario se encuentra logueado en la APP MiBanco "{datos}"')
 def step_impl(context, datos):
+    context.excel="Data.xlsx"
     context.hoja="ActivarConfirmacion"
     context.pageLogin = APP_LOGIN(context)
     context.pageConfirmacion = APP_MODO_CONFIRMACION(context)
@@ -19,9 +21,8 @@ def step_impl(context, datos):
     context.ejecutar =  context.pageConfirmacion.lecturaexcel(datos)
     if context.ejecutar=="SI":
         context.state = None
-        
-        context.pageLogin.abrir_appMiBanco()
         context.pageConfirmacion.inicializarWord(datos)
+        context.pageLogin.abrir_appMiBanco()
         context.pageLogin.click_ingresar()
         #LOGIN
         context.pageLogin.ingresar_nro_doc(datos)
@@ -98,12 +99,12 @@ def step_impl(context, datos):
 def step_impl(context, datos):
     context.pageBase = BASE_PAGE(context)
     context.pageConfirmacion = APP_MODO_CONFIRMACION(context)
-    
+    context.pageMiPerfil = APP_MIPERFIL(context)
     if context.ejecutar=="SI":
         context.pageConfirmacion.validacion_Modo_Confirmacion_Correo()
         context.pageBase.click_Opciones()
         context.pageBase.click_MiPerfil()
-        context.pageBase.click_quitar()
-        context.pageBase.click_quitar2()
+        context.pageMiPerfil.click_quitar()
+        context.pageMiPerfil.click_quitar2()
     else:
         context.state = "NO-EXECUTED"

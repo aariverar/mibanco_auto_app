@@ -32,7 +32,7 @@ class APP_MODO_CONFIRMACION:
         self.context = context
     
     def get_data(self):
-        return data(excelObjects.nombreExcel,excelObjects.nombreModoConfirmacion)
+        return data(self.context.excel,self.context.hoja)
 
     def lecturaexcel(self, datos):
         ejecucion = self.get_data()[int(datos)-1][excelObjects.columnEjecucion]

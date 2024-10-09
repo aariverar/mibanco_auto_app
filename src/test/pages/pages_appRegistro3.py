@@ -31,7 +31,7 @@ class APP_REGISTRO3:
         self.context = context
     
     def get_data(self):
-        return data(excelObjects.nombreExcel,self.context.hoja)
+        return data(self.context.excel,self.context.hoja)
 
     def lecturaexcel(self, datos):
         ejecucion = self.get_data()[int(datos)-1][excelObjects.columnEjecucion]

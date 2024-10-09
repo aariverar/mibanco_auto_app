@@ -22,7 +22,7 @@ class OUTLOOK_OTP:
         #APP_LOGIN.screenshot_counter += 1
     
     def get_data(self):
-        return data(excelObjects.nombreExcel,self.context.hoja)
+        return data(self.context.excel,self.context.hoja)
 
 
     def inicializar_driver_chrome(self):
@@ -31,6 +31,7 @@ class OUTLOOK_OTP:
             ruta_proyecto = ruta_proyecto+"/chromedriver.exe"
             chrome_options = Options()
             chrome_options.add_argument("--ignore-certificate-errors")
+            #chrome_options.add_argument("--headless")
             chrome_service = ServiceChrome(ruta_proyecto)
             self.context.driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
         except Exception as e:
@@ -45,6 +46,9 @@ class OUTLOOK_OTP:
         # self.context.nameImg.append(img_name)
         print("Se abre correctamente la URL: https://outlook.office.com/mail/")
 
+    def refrescar_outlook(self):
+        self.context.driver.refresh()
+        
     def input_email(self,datos):
         try:
             email = self.get_data()[int(datos)-1][excelObjects.columnCorreo]
@@ -56,7 +60,6 @@ class OUTLOOK_OTP:
             # generateWord.send_text("Se inputa el correo")
             # img_name = generateWord.add_image_to_word(self.context.driver)
             # self.context.nameImg.append(img_name)
-
         except NoSuchElementException:
             print("No se encontró el elemento necesario para realizar la verificación.")
 
@@ -94,7 +97,25 @@ class OUTLOOK_OTP:
             lblTituloCorreo.click()
         except NoSuchElementException:
             print("No se encontró el elemento necesario para realizar la verificación.")
- 
+
+    def click_correo_registro(self):
+        try:
+            #ultimo_correo = self.context.driver.find_element(By.XPATH, '//div[@class="EeHm8"]/div[@tabindex="0"]')
+            #ultimo_correo.click()
+            lblTituloCorreo= WebDriverWait(self.context.driver,30).until(EC.element_to_be_clickable((By.XPATH, " //span[contains(text(),'te damos la bienvenida a los canales')][1]")))
+            lblTituloCorreo.click()
+        except NoSuchElementException:
+            print("No se encontró el elemento necesario para realizar la verificación.")
+    
+    def click_correo_transferencia(self):
+            try:
+                #ultimo_correo = self.context.driver.find_element(By.XPATH, '//div[@class="EeHm8"]/div[@tabindex="0"]')
+                #ultimo_correo.click()
+                lblTituloCorreo= WebDriverWait(self.context.driver,30).until(EC.element_to_be_clickable((By.XPATH, "//span[contains(text(),'¡Listo! Tu transferencia se realizó con éxito')][1]")))
+                lblTituloCorreo.click()
+            except NoSuchElementException:
+                print("No se encontró el elemento necesario para realizar la verificación.click_cuenta_cancelacion")
+
     def extraerOTP_Login(self):
         try:
             #time(5)
@@ -157,6 +178,33 @@ class OUTLOOK_OTP:
             self.context.nameImg.append(img_name)
             raise AssertionError("NO Se visualiza el envio de constancia al correo")            
 
+    def seleccionarCorreoCancelacion(self):
+        try: 
+            tiempoTotal = 300
+            intervaloRefresh = 10
+            finTiempo = time.time() + tiempoTotal
+       
+            while time.time() < finTiempo:
+                try:
+                    lblTituloCorreo = WebDriverWait(self.context.driver, 30).until(EC.element_to_be_clickable((By.XPATH, f"//span[contains(text(),'¡Listo! Tu cuenta de ahorros Mibanco se canceló con éxito')][1]")))
+                    lblTituloCorreo.click()
+                    print("Correo encontrado y clickeado.")
+                    WebDriverWait(self.context.driver, 10).until(
+                        EC.presence_of_element_located((By.XPATH, f'//p[contains(text(), "{self.context.nroCuentaData}")]')) 
+                    )
+                    time.sleep(3)
+                    generateWord.send_text(f"Se visualiza constancia de cancelacion de cuenta")
+                    img_name = generateWord.add_image_to_word_web(self.context.driver)
+                    self.context.nameImg.append(img_name)
+                    return
+ 
+                except TimeoutException:
+                    self.context.driver.refresh()
+                    time.sleep(intervaloRefresh)  
+            print("No se encontró el correo en el tiempo especificado.")
+        except NoSuchElementException:
+            print("No se encontró el elemento necesario para realizar la verificación.")
+
         
     def seleccionarCorreoConfirmacion(self):
         try: 
@@ -214,4 +262,177 @@ class OUTLOOK_OTP:
             generateWord.send_text(f"Ocurrió un error inesperado: {str(e)}")
             img_name = generateWord.add_image_to_word_web(self.context.driver)
             self.context.nameImg.append(img_name)
-            raise AssertionError(f"Ocurrió un error inesperado: {str(e)}")                
+            raise AssertionError(f"Ocurrió un error inesperado: {str(e)}")        
+
+    def validacion_constancia_transferencia_propias(self):
+        try:
+            Log="-"
+            #VALIDACION DE MONTO
+            WebDriverWait(self.context.driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, f'//p[contains(text(), "{self.context.monto_formateado}")]')) 
+            )
+            Log="Exito validacion monto\n"
+            #VALIDACION TIPO DE TRANSFERENCIA
+            WebDriverWait(self.context.driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, '//p[contains(text(), "Entre mis cuentas de Mibanco")]')) 
+            )
+            Log+="Exito validacion tipo transferencia\n"
+
+            #VALIDACION DE NUMERO DE OPERACION
+            WebDriverWait(self.context.driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, f'//p[contains(text(), "{self.context.nrooperacion}")]')) 
+            )
+            Log+="Exito validacion numero de operacion\n"
+            #VALIDACION DE CUENTA ORIGEN
+            WebDriverWait(self.context.driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, f'//p[contains(text(), "{self.context.cuenta_origen}")]')) 
+            )
+            Log+="Exito validacion cuenta origen\n"
+            #VALIDACION DE CUENTA DESTINO
+            WebDriverWait(self.context.driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, f'//p[contains(text(), "{self.context.cuenta_destino}")]')) 
+            )
+            Log+="Exito validacion cuenta destino\n"
+            #VALIDACION DE CANAL
+            WebDriverWait(self.context.driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, f'//p[contains(text(), "app Mibanco Móvil")]')) 
+            )
+            Log+="Exito validacion de canal\n"
+            time.sleep(2)
+            generateWord.send_text("Se el envio de constancia de la transferencia")
+            img_name = generateWord.add_image_to_word_web(self.context.driver)
+            self.context.nameImg.append(img_name)
+        except NoSuchElementException:
+            print(f"No se encontró el elemento necesario para realizar la verificación. validacion_constancia_transferencia_propias() \n {Log}")
+        except TimeoutException:
+            print(f"No Se visualiza el envio de constancia al correo")
+            generateWord.send_text(f"[ERROR] Error al validar el correo de la operacion {Log}")
+            img_name = generateWord.add_image_to_word_web(self.context.driver)
+            self.context.nameImg.append(img_name)
+            raise AssertionError(f"[ERROR] Error al validar el correo de la operacion {Log}")        
+
+    def validacion_constancia_transferencia_otras_cuentas(self):
+        try:
+            Log="-"
+            #VALIDACION DE MONTO
+            WebDriverWait(self.context.driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, f'//p[contains(text(), "{self.context.monto_formateado}")]')) 
+            )
+            Log+="Validacion de monto\n"
+            #VALIDACION TIPO DE TRANSFERENCIA
+            WebDriverWait(self.context.driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, '//p[contains(text(), "A otras cuentas de Mibanco")]')) 
+            )
+            Log+="Validacion de tipo de transferencia\n"
+
+            #VALIDACION DE NUMERO DE OPERACION
+            WebDriverWait(self.context.driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, f'//p[contains(text(), "{self.context.nrooperacion}")]')) 
+            )
+            Log+="Validacion de numero de operacion\n"
+            #VALIDACION DE CUENTA ORIGEN
+            WebDriverWait(self.context.driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, f'//p[contains(text(), "{self.context.cuenta_origen}")]')) 
+            )
+            Log+="Validacion de cuenta origen\n"
+            #VALIDACION DE CUENTA DESTINO
+            WebDriverWait(self.context.driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, f'//p[contains(text(), "{self.context.cuenta_destino}")]')) 
+            )
+            Log+="Validacion de cuenta DESTINO\n"
+            #VALIDACION DE CANAL
+            WebDriverWait(self.context.driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, f'//p[contains(text(), "app Mibanco Móvil")]')) 
+            )
+            Log+="Validacion de cuenta canal\n"
+            time.sleep(2)
+            generateWord.send_text("Se el envio de constancia de la transferencia")
+            img_name = generateWord.add_image_to_word_web(self.context.driver)
+            self.context.nameImg.append(img_name)
+        except NoSuchElementException:
+            print(f"No se encontró el elemento necesario para realizar la verificación. validacion_constancia_transferencia_otras_cuentas() \n {Log}")
+        except TimeoutException:
+            print(f"No Se visualiza el envio de constancia al correo")
+            generateWord.send_text(f"[ERROR] Error al validar el correo de la operacion {Log}")
+            img_name = generateWord.add_image_to_word_web(self.context.driver)
+            self.context.nameImg.append(img_name)
+            raise AssertionError(f"[ERROR] Error al validar el correo de la operacion {Log}")          
+        
+    def seleccionarCorreoDesembolso(self):
+        try: 
+            tiempoTotal = 120
+            intervaloRefresh = 10
+            finTiempo = time.time() + tiempoTotal
+       
+            while time.time() < finTiempo:
+                try:
+                    lblTituloCorreo = WebDriverWait(self.context.driver, 30).until(EC.element_to_be_clickable((By.XPATH, f"//span[contains(text(),'¡Desembolso exitoso! Tu dinero ya está disponible en tu cuenta. Préstamo: {self.context.nrooperacion}')]")))
+                    lblTituloCorreo.click()
+                    print("Correo encontrado y clickeado.")
+                    time.sleep(1)
+                    return
+ 
+                except TimeoutException:
+                    self.context.driver.refresh()
+                    time.sleep(intervaloRefresh)  
+            print("No se encontró el correo en el tiempo especificado.")
+        except TimeoutException:
+            print(f"No se encontró el correo de desembolso: {self.context.nrooperacion}")
+            generateWord.send_text(f"No se encontró el correo de desembolso: {self.context.nrooperacion}")
+            img_name = generateWord.add_image_to_word_web(self.context.driver)
+            self.context.nameImg.append(img_name)
+            raise AssertionError(f"No se encontró el elemento necesario para realizar la verificación. Texto obtenido: {self.context.nrooperacion}")
+        
+    def validacion_constancia_desembolso(self):
+        try:
+            Log="-"
+            #VALIDACION DE MONTO
+            WebDriverWait(self.context.driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, f'//p[contains(text(), "{self.context.monto_formateado}")]')) 
+            )
+            Log+="Validacion de monto\n"
+
+            #VALIDACION TIPO DE PLAZOS
+            WebDriverWait(self.context.driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, f'//p[contains(text(), "{self.context.cuotas} cuotas")]')) 
+            )
+            Log+="Validacion de las cuotas\n"
+
+            #VALIDACION DE NUMERO DE OPERACION
+            WebDriverWait(self.context.driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, f'//p[contains(text(), "{self.context.nrooperacion}")]')) 
+            )
+            Log+="Validacion de numero de operacion\n"
+
+            #VALIDACION DE CUENTA DESTINO
+            WebDriverWait(self.context.driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, f'//p[contains(text(), "{self.context.cuenta_a_desembolsar}")]')) 
+            )
+            Log+="Validacion de cuenta DESTINO\n"
+
+            #VALIDACION DIA A PAGAR
+            WebDriverWait(self.context.driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, f'//p[contains(text(), "{self.context.dias} de cada mes")]'))
+            )
+            Log+="Exito validacion DIA A PAGAR\n"
+
+            #VALIDACION DE CANAL
+            WebDriverWait(self.context.driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, f'//p[contains(text(), "app Mibanco Móvil")]')) 
+            )
+            Log+="Validacion de cuenta canal\n"
+
+            time.sleep(2)
+            generateWord.send_text("Se valida la constancia de desembolso")
+            img_name = generateWord.add_image_to_word_web(self.context.driver)
+            self.context.nameImg.append(img_name)
+        except NoSuchElementException:
+            print(f"No se encontró el elemento necesario para realizar la verificación. validacion_constancia_desembolso() \n {Log}")
+        except TimeoutException:
+            print(f"No Se visualiza el envio de constancia al correo")
+            generateWord.send_text(f"[ERROR] Error al validar el correo del desembolso {Log}")
+            img_name = generateWord.add_image_to_word_web(self.context.driver)
+            self.context.nameImg.append(img_name)
+            raise AssertionError(f"[ERROR] Error al validar el correo del desembolso {Log}")          
+
+        

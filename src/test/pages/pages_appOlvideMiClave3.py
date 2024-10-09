@@ -31,7 +31,7 @@ class APP_OLVIDE3:
         self.context = context
     
     def get_data(self):
-        return data(excelObjects.nombreExcel,excelObjects.nombreOlvide)
+        return data(self.context.excel,excelObjects.nombreOlvide)
 
     def lecturaexcel(self, datos):
         ejecucion = self.get_data()[int(datos)-1][excelObjects.columnEjecucion]

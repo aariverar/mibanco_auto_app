@@ -226,6 +226,7 @@ def add_image_to_word_web(driver):
         print("[LOG] Imagen agregada a Word")
 
 def send_text(texto):
+    print(f"[LOG]{texto}")
     document = Document(os.path.join(os.getcwd(), temp_word_file))
     # Agregar un párrafo al documento
     paragraph = document.add_paragraph()

@@ -3,13 +3,13 @@
         "elements": [
             {
                 "keyword": "Scenario Outline",
-                "location": "src/test/features/appMiBanco.feature:65",
-                "name": "Regresi\u00f3n  - Activacion modo de confirmacion por Correo-1",
+                "location": "src/test/features/appMiBanco.feature:85",
+                "name": "Regresi\u00f3n  - Transferencia a Otras Cuentas APP - SOLES A SOLES-1",
                 "status": "passed",
                 "steps": [
                     {
                         "keyword": "Given",
-                        "location": "src/test/features/appMiBanco.feature:55",
+                        "location": "src/test/features/appMiBanco.feature:70",
                         "match": {
                             "arguments": [
                                 {
@@ -17,31 +17,25 @@
                                     "value": "1"
                                 }
                             ],
-                            "location": "src/test/features/steps/steps_appMiBancoModoConfirmacion.py:12"
+                            "location": "src/test/features/steps/steps_appMiBancoTransfOtrasCuentas.py:14"
                         },
-                        "name": "Usuario se encuentra logueado en la APP MiBanco \"1\"",
+                        "name": "Usuario se encuentra logueado en la APP MiBanco transf \"1\"",
                         "result": {
-                            "duration": 62.02053093910217,
+                            "duration": 26.25150418281555,
                             "status": "passed",
                             "imagen": [
-                                "26-09-2024_11-47-50-47.png",
-                                "26-09-2024_11-47-53-27.png",
-                                "26-09-2024_11-47-55-19.png",
-                                "26-09-2024_11-47-57-67.png",
-                                "26-09-2024_11-47-58-29.png",
-                                "26-09-2024_11-48-03-96.png",
-                                "26-09-2024_11-48-04-84.png",
-                                "26-09-2024_11-48-21-43.png",
-                                "26-09-2024_11-48-31-87.png",
-                                "26-09-2024_11-48-35-56.png",
-                                "26-09-2024_11-48-47-56.png"
+                                "09-10-2024_16-31-37-43.png",
+                                "09-10-2024_16-31-42-62.png",
+                                "09-10-2024_16-31-42-10.png",
+                                "09-10-2024_16-31-43-87.png",
+                                "09-10-2024_16-31-59-93.png"
                             ]
                         },
                         "step_type": "given"
                     },
                     {
                         "keyword": "And",
-                        "location": "src/test/features/appMiBanco.feature:56",
+                        "location": "src/test/features/appMiBanco.feature:71",
                         "match": {
                             "arguments": [
                                 {
@@ -49,39 +43,21 @@
                                     "value": "1"
                                 }
                             ],
-                            "location": "src/test/features/steps/steps_appMiBancoModoConfirmacion.py:45"
+                            "location": "src/test/features/steps/steps_appMiBancoTransfOtrasCuentas.py:49"
                         },
-                        "name": "Usuario ingresa a las Opciones \"1\"",
+                        "name": "Usuario ingresa a la opcion de Transferencias y da tap en A otras cuentas de Mibanco \"1\"",
                         "result": {
-                            "duration": 0.6214442253112793,
+                            "duration": 6.228192090988159,
                             "status": "passed",
-                            "imagen": []
-                        },
-                        "step_type": "given"
-                    },
-                    {
-                        "keyword": "And",
-                        "location": "src/test/features/appMiBanco.feature:57",
-                        "match": {
-                            "arguments": [
-                                {
-                                    "name": "datos",
-                                    "value": "1"
-                                }
-                            ],
-                            "location": "src/test/features/steps/steps_appMiBancoModoConfirmacion.py:54"
-                        },
-                        "name": "Usuario da tap al boton modo de confirmacion \"1\"",
-                        "result": {
-                            "duration": 1.0385890007019043,
-                            "status": "passed",
-                            "imagen": []
+                            "imagen": [
+                                "09-10-2024_16-32-00-24.png"
+                            ]
                         },
                         "step_type": "given"
                     },
                     {
                         "keyword": "When",
-                        "location": "src/test/features/appMiBanco.feature:58",
+                        "location": "src/test/features/appMiBanco.feature:72",
                         "match": {
                             "arguments": [
                                 {
@@ -89,22 +65,22 @@
                                     "value": "1"
                                 }
                             ],
-                            "location": "src/test/features/steps/steps_appMiBancoModoConfirmacion.py:61"
+                            "location": "src/test/features/steps/steps_appMiBancoTransfOtrasCuentas.py:58"
                         },
-                        "name": "Usuario selecciona el modo de confirmacion por correo \"1\"",
+                        "name": "Usuario selecciona la cuenta origen transferencias_otras_cuentas \"1\"",
                         "result": {
-                            "duration": 8.152334213256836,
+                            "duration": 9.71108078956604,
                             "status": "passed",
                             "imagen": [
-                                "26-09-2024_11-48-55-65.png",
-                                "26-09-2024_11-48-56-74.png"
+                                "09-10-2024_16-32-06-90.png",
+                                "09-10-2024_16-32-15-18.png"
                             ]
                         },
                         "step_type": "when"
                     },
                     {
                         "keyword": "And",
-                        "location": "src/test/features/appMiBanco.feature:59",
+                        "location": "src/test/features/appMiBanco.feature:73",
                         "match": {
                             "arguments": [
                                 {
@@ -112,21 +88,21 @@
                                     "value": "1"
                                 }
                             ],
-                            "location": "src/test/features/steps/steps_appMiBancoModoConfirmacion.py:72"
+                            "location": "src/test/features/steps/steps_appMiBancoTransfOtrasCuentas.py:68"
                         },
-                        "name": "Usuario extrae el otp del correo modoConfirmacion \"1\"",
+                        "name": "Usuario ingresa la cuenta destino transferencias_otras_cuentas \"1\"",
                         "result": {
-                            "duration": 21.93588161468506,
+                            "duration": 4.479103088378906,
                             "status": "passed",
                             "imagen": [
-                                "26-09-2024_11-49-16-76.png"
+                                "09-10-2024_16-32-20-90.png"
                             ]
                         },
                         "step_type": "when"
                     },
                     {
                         "keyword": "And",
-                        "location": "src/test/features/appMiBanco.feature:60",
+                        "location": "src/test/features/appMiBanco.feature:74",
                         "match": {
                             "arguments": [
                                 {
@@ -134,22 +110,133 @@
                                     "value": "1"
                                 }
                             ],
-                            "location": "src/test/features/steps/steps_appMiBancoModoConfirmacion.py:88"
+                            "location": "src/test/features/steps/steps_appMiBancoTransfOtrasCuentas.py:74"
                         },
-                        "name": "Usuario ingresa el codigo otp y da click en el boton Validar \"1\"",
+                        "name": "Usuario selecciona el tipo de moneda transferencias_otras_cuentas \"1\"",
                         "result": {
-                            "duration": 10.971617221832275,
+                            "duration": 2.6647660732269287,
                             "status": "passed",
                             "imagen": [
-                                "26-09-2024_11-49-27-96.png",
-                                "26-09-2024_11-49-29-58.png"
+                                "09-10-2024_16-32-21-84.png"
+                            ]
+                        },
+                        "step_type": "when"
+                    },
+                    {
+                        "keyword": "And",
+                        "location": "src/test/features/appMiBanco.feature:75",
+                        "match": {
+                            "arguments": [
+                                {
+                                    "name": "datos",
+                                    "value": "1"
+                                }
+                            ],
+                            "location": "src/test/features/steps/steps_appMiBancoTransfOtrasCuentas.py:80"
+                        },
+                        "name": "Usuario ingresa el monto a transferir \"1\"",
+                        "result": {
+                            "duration": 4.639790058135986,
+                            "status": "passed",
+                            "imagen": [
+                                "09-10-2024_16-32-27-85.png"
+                            ]
+                        },
+                        "step_type": "when"
+                    },
+                    {
+                        "keyword": "And",
+                        "location": "src/test/features/appMiBanco.feature:76",
+                        "match": {
+                            "arguments": [
+                                {
+                                    "name": "datos",
+                                    "value": "1"
+                                }
+                            ],
+                            "location": "src/test/features/steps/steps_appMiBancoTransfOtrasCuentas.py:86"
+                        },
+                        "name": "Usuario da tap en el boton Siguiente transferencias_otras_cuentas \"1\"",
+                        "result": {
+                            "duration": 1.0517857074737549,
+                            "status": "passed",
+                            "imagen": [
+                                "09-10-2024_16-32-28-60.png"
+                            ]
+                        },
+                        "step_type": "when"
+                    },
+                    {
+                        "keyword": "And",
+                        "location": "src/test/features/appMiBanco.feature:77",
+                        "match": {
+                            "arguments": [
+                                {
+                                    "name": "datos",
+                                    "value": "1"
+                                }
+                            ],
+                            "location": "src/test/features/steps/steps_appMiBancoTransfOtrasCuentas.py:92"
+                        },
+                        "name": "Usuario verifica informacion de la transferencia \"1\"",
+                        "result": {
+                            "duration": 16.060023307800293,
+                            "status": "passed",
+                            "imagen": [
+                                "09-10-2024_16-32-37-18.png",
+                                "09-10-2024_16-32-40-67.png"
+                            ]
+                        },
+                        "step_type": "when"
+                    },
+                    {
+                        "keyword": "And",
+                        "location": "src/test/features/appMiBanco.feature:78",
+                        "match": {
+                            "arguments": [
+                                {
+                                    "name": "datos",
+                                    "value": "1"
+                                }
+                            ],
+                            "location": "src/test/features/steps/steps_appMiBancoOlvideClave.py:50"
+                        },
+                        "name": "Usuario extrae el otp del correo \"1\"",
+                        "result": {
+                            "duration": 16.60161018371582,
+                            "status": "passed",
+                            "imagen": [
+                                "09-10-2024_16-33-01-46.png"
+                            ]
+                        },
+                        "step_type": "when"
+                    },
+                    {
+                        "keyword": "And",
+                        "location": "src/test/features/appMiBanco.feature:79",
+                        "match": {
+                            "arguments": [
+                                {
+                                    "name": "datos",
+                                    "value": "1"
+                                }
+                            ],
+                            "location": "src/test/features/steps/steps_appMiBancoTransfOtrasCuentas.py:101"
+                        },
+                        "name": "Usuario ingresa el codigo otp y da click en el boton Validar transferencias_otras_cuentas \"1\"",
+                        "result": {
+                            "duration": 9.410687923431396,
+                            "status": "passed",
+                            "imagen": [
+                                "09-10-2024_16-33-07-30.png",
+                                "09-10-2024_16-33-10-87.png"
                             ]
                         },
                         "step_type": "when"
                     },
                     {
                         "keyword": "Then",
-                        "location": "src/test/features/appMiBanco.feature:61",
+                        "location": "src/test/features/appMiBanco.feature:80",
                         "match": {
                             "arguments": [
                                 {
@@ -157,21 +244,45 @@
                                     "value": "1"
                                 }
                             ],
-                            "location": "src/test/features/steps/steps_appMiBancoModoConfirmacion.py:96"
+                            "location": "src/test/features/steps/steps_appMiBancoTransfOtrasCuentas.py:110"
                         },
-                        "name": "Usuario valida la activacion del modo confirmacion por correo \"1\"",
+                        "name": "Usuario valida la constancia de transferencia exitosa transferencias_otras_cuentas \"1\"",
                         "result": {
-                            "duration": 17.459372997283936,
+                            "duration": 17.89020323753357,
                             "status": "passed",
                             "imagen": [
-                                "26-09-2024_11-49-33-13.png"
+                                "09-10-2024_16-33-17-59.png",
+                                "09-10-2024_16-33-20-11.png",
+                                "09-10-2024_16-33-24-88.png"
+                            ]
+                        },
+                        "step_type": "then"
+                    },
+                    {
+                        "keyword": "And",
+                        "location": "src/test/features/appMiBanco.feature:81",
+                        "match": {
+                            "arguments": [
+                                {
+                                    "name": "datos",
+                                    "value": "1"
+                                }
+                            ],
+                            "location": "src/test/features/steps/steps_appMiBancoTransfOtrasCuentas.py:129"
+                        },
+                        "name": "Usuario valida constancia de transferencia a otras cuentas en el correo \"1\"",
+                        "result": {
+                            "duration": 5.042942762374878,
+                            "status": "passed",
+                            "imagen": [
+                                "09-10-2024_16-33-31-41.png"
                             ]
                         },
                         "step_type": "then"
                     }
                 ],
                 "tags": [
-                    "NCD_ActivarEnvioOtp",
+                    "NCD_TransferenciaOtrasCuentas",
                     "HP"
                 ],
                 "type": "scenario"

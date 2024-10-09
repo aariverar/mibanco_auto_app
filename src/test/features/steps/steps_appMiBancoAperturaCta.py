@@ -5,9 +5,11 @@ from src.test.pages.pages_appBasePage import BASE_PAGE
 from src.test.pages.pages_appModoDeConfirmacion import APP_MODO_CONFIRMACION
 from src.test.pages.pages_appAperturaCta import APP_APERTURA_CUENTA
 from src.test.pages.pages_appOlvideMiClave2 import APP_OLVIDE2
+from src.test.pages.pages_appMiPerfil import APP_MIPERFIL
 
 @given('Usuario se encuentra logueado en la APP MiBanco apertura "{datos}"')
 def step_impl(context, datos):
+        context.excel="Data.xlsx"
         context.hoja="AperturaCta"
         context.pageLogin = APP_LOGIN(context)
         context.pageConfirmacion = APP_MODO_CONFIRMACION(context)
@@ -16,14 +18,15 @@ def step_impl(context, datos):
         context.ejecutar =  context.pageLogin.lecturaexcel(datos)
         if context.ejecutar=="SI":
             context.state = None
-            context.pageLogin.abrir_appMiBanco()
             context.pageLogin.inicializarWord(datos)
+            context.pageLogin.abrir_appMiBanco()
             context.pageLogin.click_ingresar()
             #LOGIN
             context.pageLogin.ingresar_nro_doc(datos)
             context.pageLogin.ingresar_password(datos)
             context.pageLogin.click_ingresar2()
             context.pageLogin.click_valida_identidad_correo()
+            context.pageLogin.esperar_casillas_otp_login()
             context.pageOUTLOOK.inicializar_driver_chrome()
             context.pageOUTLOOK.abrir_Outlook()
             context.pageOUTLOOK.input_email(datos)
@@ -115,12 +118,13 @@ def step_impl(context, datos):
 @then('Usuario valida la constancia de creacion de cuenta exitosa "{datos}"')
 def step_impl(context, datos):
     context.pageAperturaCta = APP_APERTURA_CUENTA(context)
+    context.pageMiPerfil = APP_MIPERFIL(context)
     if context.ejecutar=="SI":
         context.pageAperturaCta.verificar_creacion_cuenta()
         context.pageBase.click_Opciones()
         context.pageBase.click_MiPerfil()
-        context.pageBase.click_quitar()
-        context.pageBase.click_quitar2()
+        context.pageMiPerfil.click_quitar()
+        context.pageMiPerfil.click_quitar2()
 
 @then('Usuario ingresa a su correo outlook y da click en el ultimo correo recibido apertura "{datos}"')
 def step_impl(context, datos):

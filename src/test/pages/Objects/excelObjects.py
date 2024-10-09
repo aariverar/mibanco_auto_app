@@ -37,3 +37,10 @@ columnTipoCuenta="tipoCuenta"
 
 #CANCELACION CUENTA
 columnNroCuenta="nroCuenta"
+
+#DESEMBOLSO EAT
+columnDias="Dia a Pagar"
+columnMotivo="Motivo Prestamo"
+columnCuotas="Cuotas"
+columnSeguro="Seguro"
+columnCuentaDesembolsar="Cuenta a Desembolsar"

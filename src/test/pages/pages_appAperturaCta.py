@@ -32,7 +32,7 @@ class APP_APERTURA_CUENTA:
         self.context = context
     
     def get_data(self):
-        return data(excelObjects.nombreExcel,excelObjects.nombreAperturaCuenta)
+        return data(self.context.excel,excelObjects.nombreAperturaCuenta)
 
     def lecturaexcel(self, datos):
         ejecucion = self.get_data()[int(datos)-1][excelObjects.columnEjecucion]
@@ -76,10 +76,17 @@ class APP_APERTURA_CUENTA:
                 self.context.nameImg.append(img_name)
                 print("No aparecio boton abre tu cuenta de ahorros aqui")
             except TimeoutException:
-                generateWord.send_text("No se visualiza el boton abre tu cuenta de ahorros")
+                for _ in range(3):
+                    scrollMobile(self.context.mdriver)
+                WebDriverWait(self.context.mdriver, 10).until(
+                EC.presence_of_element_located((AppiumBy.XPATH, '//android.widget.TextView[@resource-id="idTextPrimary" and @text="Abre tu cuenta de Ahorros aquí"]')) 
+                )
+                lnk_abreTuCuentaAhorros = self.context.mdriver.find_element(AppiumBy.XPATH, '//android.widget.TextView[@resource-id="idTextPrimary" and @text="Abre tu cuenta de Ahorros aquí"]')
+                lnk_abreTuCuentaAhorros.click()
+                generateWord.send_text("Se ingresa Abre tu cuenta de ahorros")
                 img_name = generateWord.add_image_to_word(self.context.mdriver)
                 self.context.nameImg.append(img_name)
-                raise AssertionError("ERROR NO APARECE BOTON ABRE TU CUENTA DE AHORROS")                
+                print("No aparecio boton abre tu cuenta de ahorros aqui")           
 
     def seleccionar_tipo_cuenta(self, datos):
         try:

@@ -32,7 +32,7 @@ class APP_REGISTRO:
         self.context = context
     
     def get_data(self):
-        return data(excelObjects.nombreExcel,excelObjects.nombreRegistro)
+        return data(self.context.excel,excelObjects.nombreRegistro)
 
     def lecturaexcel(self, datos):
         ejecucion = self.get_data()[int(datos)-1][excelObjects.columnEjecucion]

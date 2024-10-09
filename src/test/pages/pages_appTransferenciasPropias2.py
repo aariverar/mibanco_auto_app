@@ -13,7 +13,7 @@ from appium.webdriver.common.appiumby import AppiumBy  # Actualización para Mob
 from appium.webdriver.extensions.android.nativekey import AndroidKey
 from selenium.common.exceptions import WebDriverException
 from src.test.library.util_mobile import *
-class APP_TRANSFERENCIASOTRASCUENTA2:
+class APP_TRANSFERENCIASPROPIAS2:
 
     screenshot_counter = 0
     digit_map = {
@@ -40,7 +40,7 @@ class APP_TRANSFERENCIASOTRASCUENTA2:
             Log="-"
             #VERIFICACION TIPO TRANSFERENCIA
             WebDriverWait(self.context.mdriver, 30).until(
-                EC.presence_of_element_located((AppiumBy.XPATH, '//android.widget.TextView[contains(@text, "A otras cuentas de Mibanco")]')) 
+                EC.presence_of_element_located((AppiumBy.XPATH, '//android.widget.TextView[contains(@text, "Entre mis cuentas de Mibanco")]')) 
             )
             Log+="Exito validacion de tipo de transferencia\n"
             
@@ -58,14 +58,9 @@ class APP_TRANSFERENCIASOTRASCUENTA2:
             Log+="Exito validacion cuenta destino\n"
 
             #VERIFICACION MONTO
-            tipo_moneda = self.get_data()[int(datos)-1][excelObjects.columnTipoMoneda]
+       
             monto = self.get_data()[int(datos)-1][excelObjects.columnMonto]
-            if tipo_moneda.lower() == "soles":
-                self.context.monto_formateado  = f"S/ {float(monto):,.2f}"
-            else:
-                self.context.monto_formateado  = f"$ {float(monto):,.2f}"
-            
-            Log+=f"Se esta validando monto: {self.context.monto_formateado}"
+            self.context.monto_formateado = f"{float(monto):.2f}"
             WebDriverWait(self.context.mdriver, 30).until(
                 EC.presence_of_element_located((AppiumBy.XPATH, f'//android.widget.TextView[contains(@text, "{self.context.monto_formateado}")]')) 
             )
@@ -89,45 +84,21 @@ class APP_TRANSFERENCIASOTRASCUENTA2:
             img_name = generateWord.add_image_to_word(self.context.mdriver)
             self.context.nameImg.append(img_name)
             raise AssertionError(f"Ocurrió un error inesperado: {str(e)}")
-
-    def click_transferir(self):
+        
+    def click_terminar(self):
             try:
+                scrollMobile(self.context.mdriver)
+                scrollMobile(self.context.mdriver)
                 WebDriverWait(self.context.mdriver, 30).until(
-                    EC.presence_of_element_located((By.XPATH, '//android.widget.TextView[@resource-id="idTextPrimary" and @text="Transferir"]')) 
+                    EC.presence_of_element_located((By.XPATH, '//android.widget.TextView[@resource-id="idTextPrimary" and @text="Terminar"]')) 
                 )
-                btn_transferir = self.context.mdriver.find_element(AppiumBy.XPATH, '//android.widget.TextView[@resource-id="idTextPrimary" and @text="Transferir"]')
-                btn_transferir.click()
-                generateWord.send_text("Se da tap a transferir")
+                btn_terminar = self.context.mdriver.find_element(AppiumBy.XPATH, '//android.widget.TextView[@resource-id="idTextPrimary" and @text="Terminar"]')
+                btn_terminar.click()
+                print("[LOG] Se da tap al boton terminar")
+                generateWord.send_text("Se da tap a terminar")
                 img_name = generateWord.add_image_to_word(self.context.mdriver)
                 self.context.nameImg.append(img_name)
+                time.sleep(4)
                 
             except NoSuchElementException:
-                print("No se encontró el elemento necesario para realizar la verificación.click_transferir()")    
-    
-    def esperarPantallaOTP_Transf(self):
-        try:
-            WebDriverWait(self.context.mdriver, 30).until(
-                        EC.presence_of_element_located((By.XPATH, '//android.view.View[@resource-id="dynamickeycard_textprimary_newcode"]/preceding-sibling::android.view.View[2]')) 
-                    )
-        except TimeoutException:
-            print(f"Error en la carga de pantalla OTP.esperarPantallaOTP_Transf()\n")
-            generateWord.send_text("Error en la carga de pantalla OTP")
-            img_name = generateWord.add_image_to_word(self.context.mdriver)
-            self.context.nameImg.append(img_name)
-            raise AssertionError("Error en la carga de pantalla OTP")
-        
-    def click_validar(self):
-        try:
-            WebDriverWait(self.context.mdriver, 30).until(
-                EC.presence_of_element_located((By.XPATH, '//android.widget.TextView[@resource-id="idTextPrimary" and @text="Validar"]')) 
-            )
-            btn_validar = self.context.mdriver.find_element(AppiumBy.XPATH, '//android.widget.TextView[@resource-id="idTextPrimary" and @text="Validar"]')
-            btn_validar.click()
-            generateWord.send_text("Se da tap a validar otp")
-            img_name = generateWord.add_image_to_word(self.context.mdriver)
-            self.context.nameImg.append(img_name)
-            
-        except NoSuchElementException:
-            print("No se encontró el elemento necesario para realizar la verificación.click_validar()")    
-
-
+                print("No se encontró el elemento necesario para realizar la verificación.click_terminar()")    

@@ -32,7 +32,7 @@ class APP_TRANSFERENCIASOTRASCUENTA3:
         self.context = context
     
     def get_data(self):
-        return data(excelObjects.nombreExcel,self.context.hoja)
+        return data(self.context.excel,self.context.hoja)
     
     def verificacion_constancia(self):
         try:

@@ -1,6 +1,7 @@
 from appium import webdriver
 from appium.webdriver.common.appiumby import AppiumBy
 from appium.options.android import UiAutomator2Options
+from selenium.webdriver.remote.webelement import WebElement
 import os
 import time
 from openpyxl import Workbook, load_workbook
@@ -38,4 +39,9 @@ def scrollMobile(mdriver):
                     'command': 'input', 
                     'args': ['swipe', '500', '1000', '500', '500']  # Ajusta estas coordenadas según el tamaño de tu dispositivo
                 })
-        
+
+def long_press_action(mdriver, elem: WebElement):
+    mdriver.execute_script("mobile: longClickGesture", {
+        "elementId": elem.id,
+        "duration": 2000  # Duración del long press en milisegundos
+    })

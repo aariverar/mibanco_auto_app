@@ -32,7 +32,7 @@ class APP_CUENTA:
         self.context = context
     
     def get_data(self):
-        return data(excelObjects.nombreExcel,excelObjects.nombreAperturaCuenta)
+        return data(self.context.excel,excelObjects.nombreAperturaCuenta)
 
     def lecturaexcel(self, datos):
         ejecucion = self.get_data()[int(datos)-1][excelObjects.columnEjecucion]

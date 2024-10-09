@@ -12,6 +12,7 @@ from appium.webdriver.extensions.android.nativekey import AndroidKey
 from appium.webdriver.common.appiumby import AppiumBy  # Actualización para MobileBy
 from appium.webdriver.extensions.android.nativekey import AndroidKey
 from selenium.common.exceptions import WebDriverException
+from src.test.library.util_mobile import *
 
 class APP_LOGIN:
 
@@ -33,7 +34,7 @@ class APP_LOGIN:
         APP_LOGIN.screenshot_counter += 1
     
     def get_data(self):
-        return data(excelObjects.nombreExcel,self.context.hoja)
+        return data(self.context.excel,self.context.hoja)
 
     def lecturaexcel(self, datos):
         ejecucion = self.get_data()[int(datos)-1][excelObjects.columnEjecucion]
@@ -50,23 +51,18 @@ class APP_LOGIN:
         WebDriverWait(self.context.mdriver, 30).until(
                 EC.presence_of_element_located((By.XPATH, '//android.widget.TextView[@resource-id="idTextPrimary" and @text="Ingresar"]')) 
         )
-        generateWord.send_text("Se ingresa a la APP")
+        generateWord.send_text("Se valida pantalla inicial de APP")
         img_name = generateWord.add_image_to_word(self.context.mdriver)
         self.context.nameImg.append(img_name)
-        #if self.context is None:
-            #generateWord.send_text("Se abre la app")
-            #generateWord.add_image_to_word(self.context.mdriver)
-        #return self.context.mdriver  # Devolver el controlador
+
     
     def click_ingresar(self):
         try:
             btn_ingresar = self.context.mdriver.find_element(AppiumBy.XPATH, '//android.widget.TextView[@resource-id="idTextPrimary" and @text="Ingresar"]')
             btn_ingresar.click()
-            generateWord.send_text("Se da click al boton ingresar")
-            img_name = generateWord.add_image_to_word(self.context.mdriver)
-            self.context.nameImg.append(img_name)
-            #generateWord.send_text("Se da tap a siguiente")
-            #generateWord.add_image_to_word(self.context.mdriver)
+            # generateWord.send_text("Se da click al boton ingresar")
+            # img_name = generateWord.add_image_to_word(self.context.mdriver)
+            # self.context.nameImg.append(img_name)
         except NoSuchElementException:
             print("No se encontró el elemento necesario para realizar la verificación.")
 
@@ -100,6 +96,18 @@ class APP_LOGIN:
         except NoSuchElementException:
             print("No se encontró el elemento necesario para realizar la verificación.")
     
+    def click_ojo(self):
+        try:
+            elemento = self.context.mdriver.find_element(AppiumBy.XPATH, '//android.view.View[@content-desc="icon_card"]')
+            long_press_action(self.context.mdriver, elemento)
+            generateWord.send_text("Se da tap a ojo")
+            img_name = generateWord.add_image_to_word(self.context.mdriver)
+            self.context.nameImg.append(img_name)
+            #generateWord.send_text("Se ingresa nroDoc ")
+            #generateWord.add_image_to_word(self.context.mdriver)
+        except NoSuchElementException:
+            print("No se encontró el elemento necesario para realizar la verificación.")
+
     def click_ingresar2(self):
         try:
             btn_ingresar = self.context.mdriver.find_element(AppiumBy.XPATH, '//android.widget.TextView[@resource-id="idTextPrimary" and @text="Ingresar"]')
@@ -124,6 +132,18 @@ class APP_LOGIN:
             self.context.nameImg.append(img_name)
         except NoSuchElementException:
             print("No se encontró el elemento necesario para realizar la verificación.")
+
+    def esperar_casillas_otp_login(self):
+        try:
+            
+            WebDriverWait(self.context.mdriver, 30).until(
+                EC.presence_of_element_located((AppiumBy.XPATH, '//android.view.View[@resource-id="dynamickeycard_textprimary_newcode"]/preceding-sibling::android.view.View[5]'))
+            )
+        except TimeoutException:
+            generateWord.send_text("Error en la carga de ingreso OTP")
+            img_name = generateWord.add_image_to_word(self.context.mdriver)
+            self.context.nameImg.append(img_name)
+            raise AssertionError("Error en la carga del ingreso al otp")
 
     def ingresa_otp_login(self):
         try:

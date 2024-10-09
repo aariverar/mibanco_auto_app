@@ -153,7 +153,7 @@ def after_scenario(context, scenario):
                 context.end_time = datetime.now()
                 context.timer = context.end_time - context.start_time
                 context.estado = str(scenario.status).split('.')[-1].capitalize()
-                context.framework = "Web"
+                context.framework = "Mobile"
                 save_to_table(context, scenario)
             except Exception as e:
                 print(f"Error al guardar datos del escenario en la base de datos: {e}")
@@ -163,7 +163,7 @@ def after_scenario(context, scenario):
             print("La aplicación ha sido cerrada.")
         else:
             # Lógica para Kobiton Store
-            context.mdriver.terminate_app(context.mdriver.capabilities['app'])
+            #context.mdriver.terminate_app(context.mdriver.capabilities['app'])
             print("La aplicación ha sido cerrada.")
     except Exception as e:
         print("Error al cerrar y abrir la aplicación:", e)
@@ -172,8 +172,8 @@ def after_scenario(context, scenario):
 
 def after_all(context):
     print("Cerrando conexión mobile global...")
-    if hasattr(context, 'mdriver'):
-        context.mdriver.quit()
+    # if hasattr(context, 'mdriver'):
+    #     context.mdriver.quit()
     modify_json_behave(context.step_img, json_behave_path, json_new_path,context.newNames)
     
     # Generate the HTML report

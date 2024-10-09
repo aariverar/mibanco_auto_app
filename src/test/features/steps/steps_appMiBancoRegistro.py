@@ -7,17 +7,19 @@ from src.test.pages.pages_appOlvideMiClave2 import APP_OLVIDE2
 from src.test.pages.pages_appOlvideMiClave3 import APP_OLVIDE3
 from src.test.pages.pages_appRegistro import APP_REGISTRO
 from src.test.pages.pages_appRegistro3 import APP_REGISTRO3
+from src.test.pages.pages_appMiPerfil import APP_MIPERFIL
 
 @given('Usuario se encuentra en la APP Mibanco registro "{datos}"')
 def step_impl(context, datos):
+    context.excel="Data.xlsx"
     context.hoja="Registro"
     context.pageLogin = APP_LOGIN(context)
     context.pageRegistro = APP_REGISTRO(context)
     context.ejecutar =  context.pageRegistro.lecturaexcel(datos)
     if context.ejecutar=="SI":
         context.state = None
-        context.pageLogin.abrir_appMiBanco()
         context.pageRegistro.inicializarWord(datos)
+        context.pageLogin.abrir_appMiBanco()
         context.pageLogin.click_ingresar()
         
 
@@ -111,6 +113,27 @@ def step_impl(context, datos):
     context.pageRegistro3 = APP_REGISTRO3(context)
     if context.ejecutar=="SI":
         context.pageRegistro3.validacion_Felicitacion_registro()
+        context.pageRegistro3.click_ingresar_banca_movil()
+    else:
+        context.state = "NO-EXECUTED"
+
+@then('Usuario ingresa a la app con la contraseña creada "{datos}"')
+def step_impl(context, datos):
+    context.pageRegistro3 = APP_REGISTRO3(context)
+    context.pageLogin = APP_LOGIN(context)
+    context.pageBase = BASE_PAGE(context)
+    context.pageMiPerfil = APP_MIPERFIL(context)
+    if context.ejecutar=="SI":
+        context.pageLogin.ingresar_nro_doc(datos)
+        context.pageLogin.ingresar_password(datos)
+        context.pageLogin.click_ingresar2()
+        context.pageBase.click_omitir_tutorial()
+        context.pageBase.click_Si__ese_es_mi_correo()
+        context.pageBase.validacion_Login()
+        context.pageBase.click_Opciones()
+        context.pageBase.click_MiPerfil()
+        context.pageMiPerfil.click_quitar()
+        context.pageMiPerfil.click_quitar2()
     else:
         context.state = "NO-EXECUTED"
 
@@ -125,7 +148,7 @@ def step_impl(context, datos):
         context.pageOUTLOOK.click_siguiente()
         context.pageOUTLOOK.input_password(datos)
         context.pageOUTLOOK.click_siguiente()
-        context.pageOUTLOOK.click_ultimocorreo()
+        context.pageOUTLOOK.click_correo_registro()
         context.pageOUTLOOK.validacion_constancia_registro()
         context.pageOUTLOOK.cerrarDriver()
     else:
